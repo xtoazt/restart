@@ -37,9 +37,9 @@ const useProviderActions = () => {
         let defaultModel: string
         
         if (provider === 'openrouter') {
-          // Prefer GPT-4o if available, otherwise use the first model
-          const gpt4o = models.find(m => m.id === 'openai/gpt-4o')
-          defaultModel = gpt4o ? gpt4o.id : models[0].id
+          // Prefer Llama 3.3 70B if available, otherwise use the first model
+          const llama33 = models.find(m => m.id === 'meta-llama/llama-3.3-70b-instruct')
+          defaultModel = llama33 ? llama33.id : models[0].id
         } else {
           // For LLM7, prefer GPT-5 models or use the first model
           const gpt5 = models.find(m => m.id.includes('gpt-5'))

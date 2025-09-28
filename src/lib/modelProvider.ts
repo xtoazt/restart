@@ -16,14 +16,16 @@ const PROVIDER_ICON_MAP: Record<string, IconType> = {
   // OpenRouter specific providers
   'openrouter': 'open-ai', // Use OpenAI icon for OpenRouter
   'meta': 'open-ai', // Use OpenAI icon for Meta
+  'meta-llama': 'open-ai', // Use OpenAI icon for Meta Llama
   'google': 'gemini',
   'microsoft': 'azure',
   'perplexity': 'open-ai', // Use OpenAI icon for Perplexity
+  'qwen': 'open-ai', // Use OpenAI icon for Qwen
+  'mistralai': 'mistral',
   // LLM7 specific providers
   'llm7': 'open-ai', // Use OpenAI icon for LLM7
   'nebulablock': 'open-ai', // Use OpenAI icon for NebulaBlock
-  'nebius': 'open-ai', // Use OpenAI icon for Nebius
-  'mistralai': 'mistral'
+  'nebius': 'open-ai' // Use OpenAI icon for Nebius
 }
 
 export const getProviderIcon = (provider: string): IconType | null => {

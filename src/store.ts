@@ -120,7 +120,7 @@ export const useStore = create<Store>()(
       availableLLM7Models: [],
       setAvailableLLM7Models: (availableLLM7Models) => 
         set(() => ({ availableLLM7Models })),
-      selectedModel: 'openai/gpt-4o',
+      selectedModel: 'meta-llama/llama-3.3-70b-instruct',
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       isModelsLoading: false,
       setIsModelsLoading: (isModelsLoading) =>
