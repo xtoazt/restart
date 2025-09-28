@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import { OpenRouterModel } from '@/types/openrouter'
-import { BaseModel, LLM7Model, Provider } from '@/types/llm7'
+import { LLM7Model, Provider } from '@/types/llm7'
 import { ALL_OPENROUTER_MODELS } from '@/api/openrouter-comprehensive-models'
 import { LLM7_MODELS } from '@/api/llm7'
 
