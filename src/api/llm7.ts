@@ -1,82 +1,196 @@
 import { toast } from 'sonner'
-import { LLM7ChatRequest, LLM7ModelsResponse, LLM7Model, ProviderConfig } from '@/types/llm7'
+import { LLM7ChatRequest, LLM7Model } from '@/types/llm7'
 
-// LLM7 API configuration with rotating keys
-const LLM7_CONFIG: ProviderConfig = {
-  name: 'LLM7',
-  baseUrl: 'https://api.llm7.io/v1',
-  apiKeys: process.env.LLM7_API_KEYS ? process.env.LLM7_API_KEYS.split(',') : [],
-  currentKeyIndex: 0
-}
-
-// Rotate to next API key
-const rotateApiKey = (): string => {
-  if (LLM7_CONFIG.apiKeys.length === 0) {
-    throw new Error('LLM7 API keys are not configured. Please set LLM7_API_KEYS environment variable.')
+// Hardcoded list of available LLM7 models
+const LLM7_MODELS: LLM7Model[] = [
+  {
+    id: "deepseek-v3.1",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "deepseek-reasoning",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "gemini-2.5-flash-lite",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "gemini-search",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "mistral-small-3.1-24b-instruct-2503",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "nova-fast",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "gpt-5-mini",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "gpt-5-nano-2025-08-07",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "gpt-5-chat",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "gpt-o4-mini-2025-04-16",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "qwen2.5-coder-32b-instruct",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "roblox-rp",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "bidara",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text", "image"] }
+  },
+  {
+    id: "rtist",
+    object: "model",
+    created: 1758891961,
+    owned_by: "",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "mistral-small-2503",
+    object: "model",
+    created: 1758891961,
+    owned_by: "mistral",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "open-mixtral-8x7b",
+    object: "model",
+    created: 1758891961,
+    owned_by: "mistral",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "deepseek-ai/DeepSeek-R1-0528",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "deepseek-v3-0324",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "deepseek-r1",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "l3.3-ms-nevoria-70b",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "l3-70b-euryale-v2.1",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "l3-8b-stheno-v3.2",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebulablock",
+    modalities: { input: ["text"] }
+  },
+  {
+    id: "gemma-2-2b-it",
+    object: "model",
+    created: 1758891961,
+    owned_by: "nebius",
+    modalities: { input: ["text"] }
   }
-  LLM7_CONFIG.currentKeyIndex = (LLM7_CONFIG.currentKeyIndex + 1) % LLM7_CONFIG.apiKeys.length
-  return LLM7_CONFIG.apiKeys[LLM7_CONFIG.currentKeyIndex]
-}
-
-// Get current API key
-const getCurrentApiKey = (): string => {
-  if (LLM7_CONFIG.apiKeys.length === 0) {
-    throw new Error('LLM7 API keys are not configured. Please set LLM7_API_KEYS environment variable.')
-  }
-  return LLM7_CONFIG.apiKeys[LLM7_CONFIG.currentKeyIndex]
-}
+]
 
 export const getLLM7Models = async (): Promise<LLM7Model[]> => {
   try {
-    const response = await fetch(`${LLM7_CONFIG.baseUrl}/models`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getCurrentApiKey()}`,
-        'Content-Type': 'application/json',
-      }
-    })
+    // Try to fetch from API first, fallback to hardcoded list
+    const response = await fetch('/api/llm7/models')
     
-    if (!response.ok) {
-      // Try rotating key and retry once
-      if (response.status === 401 || response.status === 429) {
-        rotateApiKey()
-        const retryResponse = await fetch(`${LLM7_CONFIG.baseUrl}/models`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${getCurrentApiKey()}`,
-            'Content-Type': 'application/json',
-          }
-        })
-        
-        if (!retryResponse.ok) {
-          toast.error(`Failed to fetch LLM7 models: ${retryResponse.statusText}`)
-          return []
-        }
-        
-        const data: LLM7ModelsResponse = await retryResponse.json()
-        return data.data
-      }
-      
-      toast.error(`Failed to fetch LLM7 models: ${response.statusText}`)
-      return []
+    if (response.ok) {
+      const data = await response.json()
+      return data.data || LLM7_MODELS
+    } else {
+      // Fallback to hardcoded list if API fails
+      return LLM7_MODELS
     }
-    
-    const data: LLM7ModelsResponse = await response.json()
-    return data.data
   } catch (error) {
     console.error('Error fetching LLM7 models:', error)
-    toast.error('Error fetching LLM7 models')
-    return []
+    toast.error('Error loading llm7 models')
+    return LLM7_MODELS // Return hardcoded list as fallback
   }
 }
 
 export const sendLLM7ChatCompletion = async (
   request: LLM7ChatRequest
 ): Promise<Response> => {
-  return fetch(`${LLM7_CONFIG.baseUrl}/chat/completions`, {
+  return fetch('/api/llm7/chat', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${getCurrentApiKey()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(request)
@@ -86,10 +200,9 @@ export const sendLLM7ChatCompletion = async (
 export const sendLLM7StreamingChatCompletion = async (
   request: LLM7ChatRequest
 ): Promise<Response> => {
-  const response = await fetch(`${LLM7_CONFIG.baseUrl}/chat/completions`, {
+  return fetch('/api/llm7/chat', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${getCurrentApiKey()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -97,24 +210,5 @@ export const sendLLM7StreamingChatCompletion = async (
       stream: true
     })
   })
-
-  // If we get a 401 or 429, try with next key
-  if ((response.status === 401 || response.status === 429) && !response.ok) {
-    rotateApiKey()
-    return fetch(`${LLM7_CONFIG.baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${getCurrentApiKey()}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...request,
-        stream: true
-      })
-    })
-  }
-
-  return response
 }
 
-export { LLM7_CONFIG }
