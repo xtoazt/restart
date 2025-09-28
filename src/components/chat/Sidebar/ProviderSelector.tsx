@@ -18,7 +18,7 @@ const ProviderSelector = () => {
         Provider
       </div>
       <Select value={selectedProvider} onValueChange={selectProvider}>
-        <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted hover:bg-accent/80">
+        <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-primary hover:bg-accent/80">
           <div className="flex items-center gap-3">
             <Icon type="open-ai" className="shrink-0" size="xs" />
             <SelectValue>

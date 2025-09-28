@@ -1,27 +1,26 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useAuth, INTERNAL_USERS } from '@/contexts/AuthContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { toast } from 'sonner'
 import Icon from '@/components/ui/icon'
 
 const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [showUsers, setShowUsers] = useState(false)
   const { signIn } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!email || !password) {
+    if (!username || !password) {
       toast.error('Please fill in all fields')
       return
     }
 
     setIsLoading(true)
     try {
-      await signIn(email, password)
+      await signIn(username, password)
       toast.success('Successfully signed in!')
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred'
@@ -31,10 +30,9 @@ const LoginForm: React.FC = () => {
     }
   }
 
-  const handleUserSelect = (userEmail: string, userPassword: string) => {
-    setEmail(userEmail)
-    setPassword(userPassword)
-    setShowUsers(false)
+  const handleDemoLogin = () => {
+    setUsername('Bob')
+    setPassword('Demo')
   }
 
   return (
@@ -46,22 +44,22 @@ const LoginForm: React.FC = () => {
           </div>
           <h2 className="text-3xl font-bold text-primary">Welcome Back</h2>
           <p className="mt-2 text-sm text-muted">
-            Sign in to access the chat interface
+            Sign in with your username to access the chat interface
           </p>
         </div>
 
         <div className="bg-accent rounded-xl p-6 border border-primary/15">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-primary mb-2">
-                Email Address
+              <label htmlFor="username" className="block text-sm font-medium text-primary mb-2">
+                Username
               </label>
               <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
                 className="w-full border border-primary/15 bg-primaryAccent px-4 py-3 text-sm text-primary focus:border-accent rounded-xl"
                 disabled={isLoading}
               />
@@ -102,36 +100,11 @@ const LoginForm: React.FC = () => {
             <Button
               type="button"
               variant="outline"
-              onClick={() => setShowUsers(!showUsers)}
+              onClick={handleDemoLogin}
               className="w-full border-primary/15 text-primary hover:bg-accent"
             >
-              {showUsers ? 'Hide' : 'Show'} Available Users
+              Use Demo Account (Bob/Demo)
             </Button>
-
-            {showUsers && (
-              <div className="mt-4 space-y-2">
-                <p className="text-xs text-muted text-center mb-3">
-                  Click on any user to auto-fill credentials:
-                </p>
-                {INTERNAL_USERS.map((user, index) => (
-                  <div
-                    key={index}
-                    onClick={() => handleUserSelect(user.email, user.password)}
-                    className="p-3 rounded-lg border border-primary/10 bg-primaryAccent cursor-pointer hover:bg-accent transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-primary">{user.name}</p>
-                        <p className="text-xs text-muted">{user.email}</p>
-                      </div>
-                      <div className="text-xs px-2 py-1 rounded bg-primary/10 text-primary">
-                        {user.role}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 
@@ -139,7 +112,9 @@ const LoginForm: React.FC = () => {
           <p className="text-xs text-muted">
             This application uses internal authentication. 
             <br />
-            Please use one of the provided user accounts above.
+            Your username will be converted to an internal email automatically.
+            <br />
+            <span className="text-primary">Example: &quot;Bob&quot; becomes &quot;bob@restart.com&quot;</span>
           </p>
         </div>
       </div>

@@ -33,7 +33,7 @@ const useProviderActions = () => {
       }
       
       // Set default model if none selected or if provider changed
-      if (models.length > 0) {
+      if (models && models.length > 0) {
         let defaultModel: string
         
         if (provider === 'openrouter') {

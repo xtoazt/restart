@@ -35,7 +35,7 @@ const UserProfile: React.FC = () => {
             {user.displayName || user.email?.split('@')[0] || 'User'}
           </span>
           <span className="text-xs text-muted">
-            {user.email}
+            {user.email?.replace('@restart.com', '') || 'User'}
           </span>
         </div>
       </div>

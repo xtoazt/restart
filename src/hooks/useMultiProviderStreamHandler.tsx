@@ -12,7 +12,6 @@ const useMultiProviderStreamHandler = () => {
   const setStreamingErrorMessage = useStore((state) => state.setStreamingErrorMessage)
   const selectedProvider = useStore((state) => state.selectedProvider)
   const selectedModel = useStore((state) => state.selectedModel)
-  const messages = useStore((state) => state.messages)
 
   const handleStreamResponse = useCallback(
     async (input: string) => {
@@ -36,8 +35,11 @@ const useMultiProviderStreamHandler = () => {
       setMessages((prevMessages) => [...prevMessages, userMessage, assistantMessage])
 
       try {
+        // Get current messages from store
+        const currentMessages = useStore.getState().messages
+        
         // Convert existing messages to the appropriate format
-        const formattedMessages = messages.map(msg => ({
+        const formattedMessages = currentMessages.map(msg => ({
           role: msg.role === 'agent' ? 'assistant' as const : msg.role as 'user' | 'system',
           content: msg.content
         }))
@@ -153,8 +155,7 @@ const useMultiProviderStreamHandler = () => {
       setIsStreaming,
       setStreamingErrorMessage,
       selectedProvider,
-      selectedModel,
-      messages
+      selectedModel
     ]
   )
 

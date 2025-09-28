@@ -13,22 +13,18 @@ import { auth, db } from '@/lib/firebase'
 interface AuthContextType {
   user: User | null
   loading: boolean
-  signIn: (email: string, password: string) => Promise<void>
-  signUp: (email: string, password: string, name: string) => Promise<void>
+  signIn: (username: string, password: string) => Promise<void>
+  signUp: (username: string, password: string, name: string) => Promise<void>
   logout: () => Promise<void>
   isAuthenticated: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-// Internal email system - predefined users
-const INTERNAL_USERS = [
-  { email: 'admin@restart.com', password: 'admin123', name: 'Admin User', role: 'admin' },
-  { email: 'user1@restart.com', password: 'user123', name: 'User One', role: 'user' },
-  { email: 'user2@restart.com', password: 'user123', name: 'User Two', role: 'user' },
-  { email: 'demo@restart.com', password: 'demo123', name: 'Demo User', role: 'demo' },
-  { email: 'test@restart.com', password: 'test123', name: 'Test User', role: 'test' }
-]
+// Internal email system - convert username to email
+const createInternalEmail = (username: string): string => {
+  return `${username.toLowerCase()}@restart.com`
+}
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
@@ -60,30 +56,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => unsubscribe()
   }, [])
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (username: string, password: string) => {
     try {
-      // Check if it's an internal user
-      const internalUser = INTERNAL_USERS.find(u => u.email === email)
-      if (!internalUser) {
-        throw new Error('Invalid email. Please use one of the provided internal emails.')
-      }
-
-      if (internalUser.password !== password) {
-        throw new Error('Invalid password.')
-      }
-
+      // Convert username to internal email
+      const email = createInternalEmail(username)
+      
       // Check if user exists in Firebase, if not create them
       try {
         await signInWithEmailAndPassword(auth, email, password)
-        } catch (error: unknown) {
-          if (error instanceof Error && 'code' in error && error.code === 'auth/user-not-found') {
+      } catch (error: unknown) {
+        if (error instanceof Error && 'code' in error && error.code === 'auth/user-not-found') {
           // Create the user if they don't exist
           await createUserWithEmailAndPassword(auth, email, password)
           // Update the user profile
           await setDoc(doc(db, 'users', auth.currentUser!.uid), {
             email: email,
-            name: internalUser.name,
-            role: internalUser.role,
+            name: username,
+            role: 'user',
             createdAt: new Date().toISOString()
           })
         } else {
@@ -96,25 +85,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }
 
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (username: string, password: string, name: string) => {
     try {
-      // Check if it's an internal user
-      const internalUser = INTERNAL_USERS.find(u => u.email === email)
-      if (!internalUser) {
-        throw new Error('Invalid email. Please use one of the provided internal emails.')
-      }
-
-      if (internalUser.password !== password) {
-        throw new Error('Invalid password.')
-      }
-
+      // Convert username to internal email
+      const email = createInternalEmail(username)
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       
       // Create user document in Firestore
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         email: email,
         name: name,
-        role: internalUser.role,
+        role: 'user',
         createdAt: new Date().toISOString()
       })
     } catch (error: unknown) {
@@ -156,5 +138,5 @@ export const useAuth = () => {
   return context
 }
 
-// Export internal users for the login UI
-export { INTERNAL_USERS }
+// Export helper function for the login UI
+export { createInternalEmail }

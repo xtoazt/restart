@@ -42,7 +42,7 @@ const ModelSelector = () => {
       </div>
       <Select open={isOpen} onOpenChange={setIsOpen}>
         <SelectTrigger 
-          className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted hover:bg-accent/80"
+          className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-primary hover:bg-accent/80"
         >
           <div className="flex items-center gap-3">
             {currentModel && (() => {
