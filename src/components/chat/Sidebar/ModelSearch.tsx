@@ -62,7 +62,7 @@ const ModelSearch = ({
     const groups: { [key: string]: (OpenRouterModel | BaseModel)[] } = {}
     
     filteredModels.forEach(model => {
-      const provider = (model as any).provider || 'unknown'
+      const provider = (model as OpenRouterModel & { provider?: string }).provider || 'unknown'
       if (!groups[provider]) {
         groups[provider] = []
       }
