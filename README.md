@@ -1,48 +1,34 @@
-# Agent UI
+# OpenRouter Chat UI
 
-A modern chat interface for AgentOS built with Next.js, Tailwind CSS, and TypeScript. This template provides a ready-to-use UI for connecting to and interacting with your AgentOS instances through the Agno platform.
+A modern chat interface powered by OpenRouter built with Next.js, Tailwind CSS, and TypeScript. This application provides a ready-to-use UI for interacting with various AI models through the OpenRouter API.
 
 <img src="https://agno-public.s3.us-east-1.amazonaws.com/assets/agent_ui_banner.svg" alt="agent-ui" style="border-radius: 10px; width: 100%; max-width: 800px;" />
 
 ## Features
 
-- 🔗 **AgentOS Integration**: Seamlessly connect to local and live AgentOS instances
+- 🔗 **OpenRouter Integration**: Seamlessly connect to OpenRouter API for access to multiple AI models
 - 💬 **Modern Chat Interface**: Clean design with real-time streaming support
-- 🧩 **Tool Calls Support**: Visualizes agent tool calls and their results
-- 🧠 **Reasoning Steps**: Displays agent reasoning process (when available)
-- 📚 **References Support**: Show sources used by the agent
-- 🖼️ **Multi-modality Support**: Handles various content types including images, video, and audio
+- 🤖 **Multiple AI Models**: Support for GPT-4, Claude, Gemini, and many other models
 - 🎨 **Customizable UI**: Built with Tailwind CSS for easy styling
 - 🧰 **Built with Modern Stack**: Next.js, TypeScript, shadcn/ui, Framer Motion, and more
-
-## Version Support
-
-- **Main Branch**: Supports Agno v2.x (recommended)
-- **v1 Branch**: Supports Agno v1.x for legacy compatibility
+- 🔄 **Real-time Streaming**: Live chat responses with streaming support
+- 📱 **Responsive Design**: Works on desktop and mobile devices
 
 ## Getting Started
 
 ### Prerequisites
 
-Before setting up Agent UI, you need a running AgentOS instance. If you haven't created one yet, check out our [Creating Your First OS](/agent-os/creating-your-first-os) guide.
+Before setting up the OpenRouter Chat UI, you need an OpenRouter API key. You can get one by signing up at [OpenRouter](https://openrouter.ai/).
 
-> **Note**: Agent UI connects to AgentOS instances through the Agno platform. Make sure your AgentOS is running before attempting to connect.
+> **Note**: The API key is already configured in the code. For production use, consider using environment variables for security.
 
 ### Installation
-
-### Automatic Installation (Recommended)
-
-```bash
-npx create-agent-ui@latest
-```
-
-### Manual Installation
 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/agno-agi/agent-ui.git
-cd agent-ui
+git clone <your-repo-url>
+cd restart
 ```
 
 2. Install dependencies:
@@ -59,35 +45,27 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Connecting to Your AgentOS
+## Using the Chat Interface
 
-Agent UI connects directly to your AgentOS instance, allowing you to interact with your agents through a modern chat interface.
+The OpenRouter Chat UI provides a simple and intuitive interface for chatting with various AI models:
 
-> **Prerequisites**: You need a running AgentOS instance before you can connect Agent UI to it. If you haven't created one yet, check out our [Creating Your First OS](https://docs.agno.com/agent-os/creating-your-first-os) guide.
+### 1. Select a Model
 
-## Step-by-Step Connection Process
+- Click on the model selector in the left sidebar
+- Choose from available models like GPT-4, Claude, Gemini, and more
+- The interface will automatically load available models from OpenRouter
 
-### 1. Configure the Endpoint
+### 2. Start Chatting
 
-By default, Agent UI connects to `http://localhost:7777`. You can easily change this by:
+- Type your message in the input field at the bottom
+- Press Enter or click the send button to send your message
+- The AI response will stream in real-time
 
-1. Hovering over the endpoint URL in the left sidebar
-2. Clicking the edit option to modify the connection settings
+### 3. Features
 
-### 2. Choose Your Environment
-
-- **Local Development**: Use `http://localhost:7777` (default) or your custom local port
-- **Production**: Enter your production AgentOS HTTPS URL
-
-> **Warning**: Make sure your AgentOS is actually running on the specified endpoint before attempting to connect.
-
-### 3. Test the Connection
-
-Once you've configured the endpoint:
-
-1. The Agent UI will automatically attempt to connect to your AgentOS
-2. If successful, you'll see your agents available in the chat interface
-3. If there are connection issues, check that your AgentOS is running and accessible. Check out the troubleshooting guide [here](https://docs.agno.com/faq/agentos-connection)
+- **Real-time Streaming**: Responses appear as they're generated
+- **Model Switching**: Change models anytime during your conversation
+- **Clean Interface**: Focus on the conversation with a minimal, distraction-free design
 
 
 

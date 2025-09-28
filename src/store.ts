@@ -7,6 +7,7 @@ import {
   TeamDetails,
   type ChatMessage
 } from '@/types/os'
+import { OpenRouterModel } from '@/types/openrouter'
 
 interface Store {
   hydrated: boolean
@@ -36,6 +37,7 @@ interface Store {
   chatInputRef: React.RefObject<HTMLTextAreaElement | null>
   selectedEndpoint: string
   setSelectedEndpoint: (selectedEndpoint: string) => void
+  // Legacy AgentOS fields (kept for compatibility)
   agents: AgentDetails[]
   setAgents: (agents: AgentDetails[]) => void
   teams: TeamDetails[]
@@ -52,6 +54,13 @@ interface Store {
   ) => void
   isSessionsLoading: boolean
   setIsSessionsLoading: (isSessionsLoading: boolean) => void
+  // OpenRouter fields
+  availableModels: OpenRouterModel[]
+  setAvailableModels: (models: OpenRouterModel[]) => void
+  selectedOpenRouterModel: string
+  setSelectedOpenRouterModel: (model: string) => void
+  isModelsLoading: boolean
+  setIsModelsLoading: (isLoading: boolean) => void
 }
 
 export const useStore = create<Store>()(
@@ -100,7 +109,16 @@ export const useStore = create<Store>()(
         })),
       isSessionsLoading: false,
       setIsSessionsLoading: (isSessionsLoading) =>
-        set(() => ({ isSessionsLoading }))
+        set(() => ({ isSessionsLoading })),
+      // OpenRouter fields
+      availableModels: [],
+      setAvailableModels: (availableModels) => set(() => ({ availableModels })),
+      selectedOpenRouterModel: 'openai/gpt-4o',
+      setSelectedOpenRouterModel: (selectedOpenRouterModel) => 
+        set(() => ({ selectedOpenRouterModel })),
+      isModelsLoading: false,
+      setIsModelsLoading: (isModelsLoading) =>
+        set(() => ({ isModelsLoading }))
     }),
     {
       name: 'endpoint-storage',
