@@ -70,6 +70,9 @@ export interface OpenRouterModel {
     completion_tokens?: string
   }
   isFree?: boolean
+  features?: string[]
+  capabilities?: string[]
+  useCases?: string[]
 }
 
 export interface OpenRouterModelsResponse {

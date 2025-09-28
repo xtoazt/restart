@@ -12,7 +12,10 @@ export const COMPREHENSIVE_OPENROUTER_MODELS: OpenRouterModel[] = [
     architecture: { modality: "text", tokenizer: "grok", instruct_type: "chat" },
     top_provider: { context_length: 2000000, max_completion_tokens: undefined },
     per_request_limits: { prompt_tokens: "2000000", completion_tokens: "8192" },
-    isFree: true
+    isFree: true,
+    features: ["Web Search", "Real-time Data", "Code Generation", "Creative Writing"],
+    capabilities: ["Large Context", "Fast Response", "Multilingual", "Reasoning"],
+    useCases: ["Research", "Coding", "Content Creation", "Analysis"]
   },
   {
     id: "nvidia/nemotron-nano-9b-v2:free",
@@ -34,7 +37,10 @@ export const COMPREHENSIVE_OPENROUTER_MODELS: OpenRouterModel[] = [
     architecture: { modality: "text", tokenizer: "deepseek", instruct_type: "chat" },
     top_provider: { context_length: 163840, max_completion_tokens: undefined },
     per_request_limits: { prompt_tokens: "163840", completion_tokens: "8192" },
-    isFree: true
+    isFree: true,
+    features: ["Code Generation", "Mathematical Reasoning", "Scientific Analysis"],
+    capabilities: ["Large Context", "High Accuracy", "Multilingual", "Problem Solving"],
+    useCases: ["Programming", "Research", "Education", "Technical Writing"]
   },
   {
     id: "openai/gpt-oss-120b:free",

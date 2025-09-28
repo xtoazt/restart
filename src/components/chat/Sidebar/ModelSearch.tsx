@@ -192,7 +192,7 @@ const ModelSearch = ({
               </SelectValue>
             </div>
           </SelectTrigger>
-          <SelectContent className="max-h-80 w-full min-w-[300px] bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
+          <SelectContent className="max-h-80 w-full min-w-[400px] bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
             {Object.entries(groupedModels).map(([provider, models]) => (
               <div key={provider}>
                 <div className="px-3 py-2 text-xs font-semibold text-white/50 uppercase tracking-wider border-b border-white/10">
@@ -231,6 +231,18 @@ const ModelSearch = ({
                             <span className="text-xs text-white/60 truncate">
                               {model.description}
                             </span>
+                          )}
+                          {'features' in model && model.features && model.features.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {model.features.slice(0, 3).map((feature, idx) => (
+                                <span key={idx} className="text-xs bg-white/10 text-white/80 px-1.5 py-0.5 rounded text-xs">
+                                  {feature}
+                                </span>
+                              ))}
+                              {model.features.length > 3 && (
+                                <span className="text-xs text-white/60">+{model.features.length - 3} more</span>
+                              )}
+                            </div>
                           )}
                           {'pricing' in model && model.pricing && (
                             <span className="text-xs text-white/60 truncate">
