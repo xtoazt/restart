@@ -90,10 +90,10 @@ const ModelSearch = ({
           Provider
         </div>
         <Select value={selectedProvider} onValueChange={(value) => onProviderSelect(value as Provider)}>
-          <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-brand/20">
+          <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-blue-500/20">
             <div className="flex items-center gap-3">
               <Icon type="open-ai" className="shrink-0" size="sm" />
-              <SelectValue>
+              <SelectValue placeholder="Select Provider">
                 {providers.find(p => p.value === selectedProvider)?.label}
               </SelectValue>
             </div>
@@ -103,7 +103,7 @@ const ModelSearch = ({
               <SelectItem 
                 key={provider.value} 
                 value={provider.value}
-                className="flex items-center gap-3 p-3 text-primary hover:bg-accent/50 focus:bg-accent/50 transition-colors"
+                className="flex items-center gap-3 p-3 text-primary hover:bg-white/10 focus:bg-white/10 transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-3">
                   <Icon type={provider.icon as 'open-ai'} className="shrink-0" size="sm" />
@@ -126,7 +126,7 @@ const ModelSearch = ({
             placeholder="Search models by name, ID, or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-all duration-200"
+            className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
           />
           <Icon 
             type="search" 
@@ -143,7 +143,7 @@ const ModelSearch = ({
           id="showAllModels"
           checked={showAllModels}
           onChange={(e) => setShowAllModels(e.target.checked)}
-          className="rounded border-primary/20 bg-background/50 text-brand focus:ring-brand/20"
+          className="rounded border-primary/20 bg-background/50 text-blue-500 focus:ring-blue-500/20"
         />
         <label htmlFor="showAllModels" className="text-xs text-primary/70 cursor-pointer">
           Show all available models (including premium)
@@ -156,7 +156,7 @@ const ModelSearch = ({
           Model
         </div>
         <Select value={selectedModel} onValueChange={onModelSelect}>
-          <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-brand/20">
+          <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-blue-500/20">
             <div className="flex items-center gap-3">
               {selectedModel && (() => {
                 const model = allModels.find(m => m.id === selectedModel)
@@ -191,10 +191,10 @@ const ModelSearch = ({
                     <SelectItem 
                       key={model.id} 
                       value={model.id}
-                      className={`flex items-center gap-3 p-3 text-primary transition-colors ${
+                      className={`flex items-center gap-3 p-3 text-primary transition-colors cursor-pointer ${
                         model.isFree === false 
-                          ? 'opacity-60 hover:bg-accent/30 focus:bg-accent/30' 
-                          : 'hover:bg-accent/50 focus:bg-accent/50'
+                          ? 'opacity-60 hover:bg-white/5 focus:bg-white/5' 
+                          : 'hover:bg-white/10 focus:bg-white/10'
                       }`}
                       onSelect={() => onModelSelect(model.id)}
                     >
@@ -204,7 +204,7 @@ const ModelSearch = ({
                           <div className="flex items-center gap-2">
                             <span className="text-sm font-medium">{('name' in model && model.name) || model.id}</span>
                             {model.isFree === false && (
-                              <span className="text-xs bg-brand/20 text-brand px-2 py-0.5 rounded-full">
+                              <span className="text-xs bg-blue-900/30 text-blue-300 px-2 py-0.5 rounded-full">
                                 Premium
                               </span>
                             )}
