@@ -199,6 +199,6 @@ export const searchModels = (query: string) => {
   return ALL_OPENROUTER_MODELS.filter(model => 
     model.name.toLowerCase().includes(lowercaseQuery) ||
     model.id.toLowerCase().includes(lowercaseQuery) ||
-    model.description.toLowerCase().includes(lowercaseQuery)
+    (model.description && model.description.toLowerCase().includes(lowercaseQuery))
   )
 }
