@@ -47,9 +47,9 @@ const ModelSearch = ({
   }, [])
 
   // Filter models based on search query
-  const filteredModels = useMemo(() => {
+  const filteredModels = useMemo((): UnifiedModel[] => {
     if (!searchQuery.trim()) {
-      return showAllModels ? allModels : availableModels
+      return showAllModels ? allModels : (availableModels as UnifiedModel[])
     }
 
     const query = searchQuery.toLowerCase()
