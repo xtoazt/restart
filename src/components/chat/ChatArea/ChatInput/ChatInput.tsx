@@ -49,7 +49,7 @@ const ChatInput = () => {
               handleSubmit()
             }
           }}
-          className="w-full min-h-[52px] max-h-32 border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-all duration-200 resize-none"
+          className="w-full min-h-[52px] max-h-32 border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:ring-2 focus:ring-white/20 transition-all duration-200 resize-none"
           disabled={!selectedModel}
           ref={chatInputRef}
         />

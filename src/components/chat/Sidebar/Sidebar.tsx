@@ -11,8 +11,8 @@ import Icon from '@/components/ui/icon'
 
 const SidebarHeader = () => (
   <div className="flex items-center gap-3 px-2">
-    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-lg">
-      <Icon type="agno" size="sm" className="text-white" />
+    <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-lg">
+      <Icon type="agno" size="sm" className="text-black" />
     </div>
     <span className="text-sm font-bold text-primary">Agent UI</span>
   </div>

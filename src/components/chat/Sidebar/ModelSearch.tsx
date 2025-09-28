@@ -101,7 +101,13 @@ const ModelSearch = ({
         <div className="text-xs font-semibold uppercase tracking-wider text-white/70 mb-3">
           Provider
         </div>
-        <Select value={selectedProvider} onValueChange={(value) => onProviderSelect(value as Provider)}>
+        <Select value={selectedProvider} onValueChange={async (value) => {
+          try {
+            await onProviderSelect(value as Provider)
+          } catch (error) {
+            console.error('Error selecting provider:', error)
+          }
+        }}>
           <SelectTrigger className="h-11 w-full rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm p-3 text-sm font-medium text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 focus:ring-2 focus:ring-white/20">
             <div className="flex items-center gap-3">
               <Icon type="open-ai" className="shrink-0" size="sm" />

@@ -34,8 +34,8 @@ const NameInput: React.FC = () => {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-xl">
-                <Icon type="agno" size="lg" className="text-white" />
+              <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-xl">
+                <Icon type="agno" size="lg" className="text-black" />
               </div>
             </div>
             <h2 className="text-4xl font-bold text-primary mb-2">Welcome, {name}!</h2>
@@ -66,8 +66,8 @@ const NameInput: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-xl">
-              <Icon type="agno" size="lg" className="text-white" />
+            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-xl">
+              <Icon type="agno" size="lg" className="text-black" />
             </div>
           </div>
           <h2 className="text-4xl font-bold text-primary mb-2">Welcome!</h2>
@@ -88,7 +88,7 @@ const NameInput: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand/50 focus:ring-2 focus:ring-brand/20 rounded-xl transition-all duration-200"
+                className="w-full border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-white/50 focus:ring-2 focus:ring-white/20 rounded-xl transition-all duration-200"
                 autoFocus
               />
             </div>
