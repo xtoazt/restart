@@ -69,6 +69,7 @@ export interface OpenRouterModel {
     prompt_tokens?: string
     completion_tokens?: string
   }
+  isFree?: boolean
 }
 
 export interface OpenRouterModelsResponse {

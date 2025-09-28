@@ -1,9 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import ModelSelector from '@/components/chat/Sidebar/ModelSelector'
-import ProviderSelector from '@/components/chat/Sidebar/ProviderSelector'
+import ModelSearch from '@/components/chat/Sidebar/ModelSearch'
 import UserProfile from '@/components/chat/Sidebar/UserProfile'
 import useChatActions from '@/hooks/useChatActions'
+import useProviderActions from '@/hooks/useProviderActions'
 import { useStore } from '@/store'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
@@ -41,6 +41,13 @@ const NewChatButton = ({
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const { clearChat, focusChatInput } = useChatActions()
+  const { 
+    selectedProvider, 
+    selectModel, 
+    availableModels, 
+    selectedModel, 
+    selectProvider
+  } = useProviderActions()
   const {
     messages,
     hydrated
@@ -98,8 +105,13 @@ const Sidebar = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
             >
-              <ProviderSelector />
-              <ModelSelector />
+              <ModelSearch
+                selectedModel={selectedModel}
+                selectedProvider={selectedProvider}
+                onModelSelect={selectModel}
+                onProviderSelect={selectProvider}
+                availableModels={availableModels}
+              />
             </motion.div>
             <UserProfile />
           </>
