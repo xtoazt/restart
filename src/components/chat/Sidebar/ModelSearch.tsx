@@ -50,11 +50,12 @@ const ModelSearch = ({
     }
 
     const query = searchQuery.toLowerCase()
-    return allModels.filter(model => 
-      model.name.toLowerCase().includes(query) ||
-      model.id.toLowerCase().includes(query) ||
-      (model.description && model.description.toLowerCase().includes(query))
-    )
+    return allModels.filter(model => {
+      const modelName = (model as any).name || model.id
+      return modelName.toLowerCase().includes(query) ||
+        model.id.toLowerCase().includes(query) ||
+        ((model as any).description && (model as any).description.toLowerCase().includes(query))
+    })
   }, [searchQuery, showAllModels, allModels, availableModels])
 
   // Group models by provider
@@ -164,7 +165,10 @@ const ModelSearch = ({
               })()}
               <SelectValue placeholder="Select Model">
                 {selectedModel ? 
-                  allModels.find(m => m.id === selectedModel)?.name || selectedModel : 
+                  (() => {
+                    const model = allModels.find(m => m.id === selectedModel)
+                    return (model as any)?.name || model?.id || selectedModel
+                  })() : 
                   'Select Model'
                 }
               </SelectValue>
@@ -194,26 +198,26 @@ const ModelSearch = ({
                         {icon && <Icon type={icon} className="shrink-0" size="sm" />}
                         <div className="flex flex-col flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">{model.name}</span>
-                            {model.isFree === false && (
+                            <span className="text-sm font-medium">{(model as any).name || model.id}</span>
+                            {(model as any).isFree === false && (
                               <span className="text-xs bg-brand/20 text-brand px-2 py-0.5 rounded-full">
                                 Premium
                               </span>
                             )}
-                            {model.isFree === true && (
+                            {(model as any).isFree === true && (
                               <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
                                 Free
                               </span>
                             )}
                           </div>
-                          {model.description && (
+                          {(model as any).description && (
                             <span className="text-xs text-muted">
-                              {model.description}
+                              {(model as any).description}
                             </span>
                           )}
-                          {model.pricing && (
+                          {(model as any).pricing && (
                             <span className="text-xs text-muted">
-                              ${model.pricing.prompt}/${model.pricing.completion} per 1M tokens
+                              ${(model as any).pricing.prompt}/${(model as any).pricing.completion} per 1M tokens
                             </span>
                           )}
                         </div>
