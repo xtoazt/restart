@@ -3,10 +3,10 @@ import { useState, useMemo } from 'react'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Icon from '@/components/ui/icon'
-import { getProviderIcon, getProviderFromModel } from '@/lib/modelProvider'
+import { getProviderIcon } from '@/lib/modelProvider'
 import { OpenRouterModel } from '@/types/openrouter'
 import { BaseModel } from '@/types/llm7'
-import { ALL_OPENROUTER_MODELS, searchModels } from '@/api/openrouter-comprehensive-models'
+import { ALL_OPENROUTER_MODELS } from '@/api/openrouter-comprehensive-models'
 import { LLM7_MODELS } from '@/api/llm7'
 
 interface ModelSearchProps {
@@ -59,10 +59,10 @@ const ModelSearch = ({
 
   // Group models by provider
   const groupedModels = useMemo(() => {
-    const groups: { [key: string]: any[] } = {}
+    const groups: { [key: string]: (OpenRouterModel | BaseModel)[] } = {}
     
     filteredModels.forEach(model => {
-      const provider = model.provider || 'unknown'
+      const provider = (model as any).provider || 'unknown'
       if (!groups[provider]) {
         groups[provider] = []
       }

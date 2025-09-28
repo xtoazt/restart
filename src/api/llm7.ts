@@ -2,7 +2,7 @@ import { toast } from 'sonner'
 import { LLM7ChatRequest, LLM7Model } from '@/types/llm7'
 
 // Hardcoded list of available LLM7 models
-const LLM7_MODELS: LLM7Model[] = [
+export const LLM7_MODELS: LLM7Model[] = [
   {
     id: "deepseek-v3.1",
     object: "model",
