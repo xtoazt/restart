@@ -5,9 +5,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import { OpenRouterModel } from '@/types/openrouter'
-import { BaseModel } from '@/types/llm7'
+import { BaseModel, LLM7Model } from '@/types/llm7'
 import { ALL_OPENROUTER_MODELS } from '@/api/openrouter-comprehensive-models'
 import { LLM7_MODELS } from '@/api/llm7'
+
+// Union type for all possible models
+type UnifiedModel = (OpenRouterModel & { provider?: string }) | (LLM7Model & { provider?: string; isFree?: boolean })
 
 interface ModelSearchProps {
   selectedModel: string
@@ -28,13 +31,13 @@ const ModelSearch = ({
   const [showAllModels, setShowAllModels] = useState(false)
 
   // Combine all models from both providers
-  const allModels = useMemo(() => {
-    const openRouterModels = ALL_OPENROUTER_MODELS.map(model => ({
+  const allModels = useMemo((): UnifiedModel[] => {
+    const openRouterModels: UnifiedModel[] = ALL_OPENROUTER_MODELS.map(model => ({
       ...model,
       provider: 'openrouter'
     }))
     
-    const llm7Models = LLM7_MODELS.map(model => ({
+    const llm7Models: UnifiedModel[] = LLM7_MODELS.map(model => ({
       ...model,
       provider: 'llm7',
       isFree: true // LLM7 models are generally free
@@ -51,19 +54,20 @@ const ModelSearch = ({
 
     const query = searchQuery.toLowerCase()
     return allModels.filter(model => {
-      const modelName = (model as any).name || model.id
+      const modelName = 'name' in model ? model.name : model.id
+      const description = 'description' in model ? model.description : undefined
       return modelName.toLowerCase().includes(query) ||
         model.id.toLowerCase().includes(query) ||
-        ((model as any).description && (model as any).description.toLowerCase().includes(query))
+        (description && description.toLowerCase().includes(query))
     })
   }, [searchQuery, showAllModels, allModels, availableModels])
 
   // Group models by provider
   const groupedModels = useMemo(() => {
-    const groups: { [key: string]: (OpenRouterModel | BaseModel)[] } = {}
+    const groups: { [key: string]: UnifiedModel[] } = {}
     
     filteredModels.forEach(model => {
-      const provider = (model as OpenRouterModel & { provider?: string }).provider || 'unknown'
+      const provider = model.provider || 'unknown'
       if (!groups[provider]) {
         groups[provider] = []
       }
@@ -167,7 +171,7 @@ const ModelSearch = ({
                 {selectedModel ? 
                   (() => {
                     const model = allModels.find(m => m.id === selectedModel)
-                    return (model as any)?.name || model?.id || selectedModel
+                    return ('name' in model && model.name) || model?.id || selectedModel
                   })() : 
                   'Select Model'
                 }
@@ -198,26 +202,26 @@ const ModelSearch = ({
                         {icon && <Icon type={icon} className="shrink-0" size="sm" />}
                         <div className="flex flex-col flex-1">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">{(model as any).name || model.id}</span>
-                            {(model as any).isFree === false && (
+                            <span className="text-sm font-medium">{('name' in model && model.name) || model.id}</span>
+                            {model.isFree === false && (
                               <span className="text-xs bg-brand/20 text-brand px-2 py-0.5 rounded-full">
                                 Premium
                               </span>
                             )}
-                            {(model as any).isFree === true && (
+                            {model.isFree === true && (
                               <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded-full">
                                 Free
                               </span>
                             )}
                           </div>
-                          {(model as any).description && (
+                          {'description' in model && model.description && (
                             <span className="text-xs text-muted">
-                              {(model as any).description}
+                              {model.description}
                             </span>
                           )}
-                          {(model as any).pricing && (
+                          {'pricing' in model && model.pricing && (
                             <span className="text-xs text-muted">
-                              ${(model as any).pricing.prompt}/${(model as any).pricing.completion} per 1M tokens
+                              ${model.pricing.prompt}/${model.pricing.completion} per 1M tokens
                             </span>
                           )}
                         </div>
