@@ -5,6 +5,7 @@ import { FC, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import CodeBlock from '@/components/ui/CodeBlock'
 
 import type {
   UnorderedListProps,
@@ -123,9 +124,31 @@ const HorizontalRule = ({ className, ...props }: HorizontalRuleProps) => (
 
 const InlineCode: FC<PreparedTextProps> = ({ children }) => {
   return (
-    <code className="relative whitespace-pre-wrap rounded-sm bg-background-secondary/50 p-1">
+    <code className="relative whitespace-pre-wrap rounded-sm bg-white/10 p-1 text-sm font-mono text-white">
       {children}
     </code>
+  )
+}
+
+const PreCode: FC<{ children: any }> = ({ children }) => {
+  // Extract the code content and language from the children
+  const codeElement = children?.props?.children
+  const className = children?.props?.className || ''
+  const language = className.replace('language-', '') || 'text'
+  
+  if (typeof codeElement === 'string') {
+    return <CodeBlock language={language}>{codeElement}</CodeBlock>
+  }
+  
+  // Fallback for complex code structures
+  return (
+    <div className="relative my-4">
+      <div className="bg-black/80 border border-white/20 rounded-lg p-4 overflow-x-auto">
+        <pre className="text-sm font-mono text-white whitespace-pre-wrap">
+          {children}
+        </pre>
+      </div>
+    </div>
   )
 }
 
@@ -269,6 +292,7 @@ export const components = {
   hr: HorizontalRule,
   blockquote: Blockquote,
   code: InlineCode,
+  pre: PreCode,
   a: AnchorLink,
   img: Img,
   p: Paragraph,

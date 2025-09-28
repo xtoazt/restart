@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import ModelSearch from '@/components/chat/Sidebar/ModelSearch'
 import UserProfile from '@/components/chat/Sidebar/UserProfile'
+import ChatSessions from '@/components/chat/Sidebar/ChatSessions'
 import useChatActions from '@/hooks/useChatActions'
 import useProviderActions from '@/hooks/useProviderActions'
 import { useStore } from '@/store'
@@ -110,6 +111,7 @@ const Sidebar = () => {
                 onModelSelect={selectModel}
                 onProviderSelect={selectProvider}
               />
+              <ChatSessions />
             </motion.div>
             <UserProfile />
           </>

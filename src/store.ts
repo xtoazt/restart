@@ -10,6 +10,16 @@ import {
 import { OpenRouterModel } from '@/types/openrouter'
 import { LLM7Model, Provider } from '@/types/llm7'
 
+export interface ChatSession {
+  id: string
+  title: string
+  messages: ChatMessage[]
+  provider: Provider
+  model: string
+  createdAt: Date
+  updatedAt: Date
+}
+
 interface Store {
   hydrated: boolean
   setHydrated: () => void
@@ -64,6 +74,15 @@ interface Store {
   setSelectedModel: (model: string) => void
   isModelsLoading: boolean
   setIsModelsLoading: (isLoading: boolean) => void
+  // Chat sessions
+  chatSessions: ChatSession[]
+  setChatSessions: (sessions: ChatSession[] | ((prev: ChatSession[]) => ChatSession[])) => void
+  currentSessionId: string | null
+  setCurrentSessionId: (sessionId: string | null) => void
+  saveCurrentChat: () => void
+  loadChatSession: (sessionId: string) => void
+  deleteChatSession: (sessionId: string) => void
+  clearAllChats: () => void
 }
 
 export const useStore = create<Store>()(
@@ -124,13 +143,78 @@ export const useStore = create<Store>()(
       setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       isModelsLoading: false,
       setIsModelsLoading: (isModelsLoading) =>
-        set(() => ({ isModelsLoading }))
+        set(() => ({ isModelsLoading })),
+      // Chat sessions
+      chatSessions: [],
+      setChatSessions: (sessions) =>
+        set((state) => ({
+          chatSessions:
+            typeof sessions === 'function' ? sessions(state.chatSessions) : sessions
+        })),
+      currentSessionId: null,
+      setCurrentSessionId: (currentSessionId) => set(() => ({ currentSessionId })),
+      saveCurrentChat: () =>
+        set((state) => {
+          if (state.messages.length === 0) return state
+          
+          const title = state.messages[0]?.content?.substring(0, 50) + '...' || 'New Chat'
+          const sessionId = state.currentSessionId || `session-${Date.now()}`
+          
+          const newSession: ChatSession = {
+            id: sessionId,
+            title,
+            messages: state.messages,
+            provider: state.selectedProvider,
+            model: state.selectedModel,
+            createdAt: state.currentSessionId 
+              ? state.chatSessions.find(s => s.id === state.currentSessionId)?.createdAt || new Date()
+              : new Date(),
+            updatedAt: new Date()
+          }
+          
+          const existingIndex = state.chatSessions.findIndex(s => s.id === sessionId)
+          const updatedSessions = existingIndex >= 0
+            ? state.chatSessions.map((s, i) => i === existingIndex ? newSession : s)
+            : [...state.chatSessions, newSession]
+          
+          return {
+            chatSessions: updatedSessions,
+            currentSessionId: sessionId
+          }
+        }),
+      loadChatSession: (sessionId) =>
+        set((state) => {
+          const session = state.chatSessions.find(s => s.id === sessionId)
+          if (!session) return state
+          
+          return {
+            messages: session.messages,
+            selectedProvider: session.provider,
+            selectedModel: session.model,
+            currentSessionId: sessionId
+          }
+        }),
+      deleteChatSession: (sessionId) =>
+        set((state) => ({
+          chatSessions: state.chatSessions.filter(s => s.id !== sessionId),
+          currentSessionId: state.currentSessionId === sessionId ? null : state.currentSessionId
+        })),
+      clearAllChats: () =>
+        set(() => ({
+          chatSessions: [],
+          currentSessionId: null,
+          messages: []
+        }))
     }),
     {
       name: 'endpoint-storage',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
-        selectedEndpoint: state.selectedEndpoint
+        selectedEndpoint: state.selectedEndpoint,
+        chatSessions: state.chatSessions,
+        currentSessionId: state.currentSessionId,
+        selectedProvider: state.selectedProvider,
+        selectedModel: state.selectedModel
       }),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated?.()
