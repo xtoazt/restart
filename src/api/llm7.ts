@@ -5,23 +5,24 @@ import { LLM7ChatRequest, LLM7ModelsResponse, LLM7Model, ProviderConfig } from '
 const LLM7_CONFIG: ProviderConfig = {
   name: 'LLM7',
   baseUrl: 'https://api.llm7.io/v1',
-  apiKeys: [
-    'jWu2HHhYpFNvFXRKxySq+nPM6MFRh5scJ8N5Mcnr19jdBd5flynfKRFgyTargFWn36Q6e+jzczISigrDIL2OrmjiDUa3R+BNpxDvM/3h5rkobD5BWqIaZQEx',
-    'gb75kpKNCb6/n/OwzM1rcXwULeYeDGw2OGFGRt/CevDCCukgacfXWdQh1MxbZFcJsyQMN4u/2Qbma+DyxnbVJHvNrYREo1FVn48qxxtIlOfu3KnXbVtv6KxW',
-    'wp3cRRmAesnkhi9n+ZjvHevrqSE59mqAht42fXjaSkCGyK3tgTu1BdKTIBLlA6bVcd1FNAqRQNX/6sxjnXvpOmW8faEMLjE3FjgYp3OPRfyL+XAZhOLzIUKe',
-    'LZhbJUXz1MIIBZSNfp7z0iqm6QCfNpEU/P/cLkVWQgUoaTQQhnuQnX0NANpPk8BciqubYxXpqs1g7oT+v5ERrq5AEpE857fFo1HubWwCK/StEekqgWd3Rhe5'
-  ],
+  apiKeys: process.env.LLM7_API_KEYS ? process.env.LLM7_API_KEYS.split(',') : [],
   currentKeyIndex: 0
 }
 
 // Rotate to next API key
 const rotateApiKey = (): string => {
+  if (LLM7_CONFIG.apiKeys.length === 0) {
+    throw new Error('LLM7 API keys are not configured. Please set LLM7_API_KEYS environment variable.')
+  }
   LLM7_CONFIG.currentKeyIndex = (LLM7_CONFIG.currentKeyIndex + 1) % LLM7_CONFIG.apiKeys.length
   return LLM7_CONFIG.apiKeys[LLM7_CONFIG.currentKeyIndex]
 }
 
 // Get current API key
 const getCurrentApiKey = (): string => {
+  if (LLM7_CONFIG.apiKeys.length === 0) {
+    throw new Error('LLM7 API keys are not configured. Please set LLM7_API_KEYS environment variable.')
+  }
   return LLM7_CONFIG.apiKeys[LLM7_CONFIG.currentKeyIndex]
 }
 

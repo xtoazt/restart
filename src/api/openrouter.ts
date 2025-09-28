@@ -5,7 +5,7 @@ import {
   OpenRouterModel 
 } from '@/types/openrouter'
 
-const OPENROUTER_API_KEY = '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'
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 
 // Curated list of free OpenRouter models (all models with $0 pricing)
 const FREE_OPENROUTER_MODELS: OpenRouterModel[] = [
@@ -320,6 +320,10 @@ export const getOpenRouterModels = async (): Promise<OpenRouterModel[]> => {
 export const sendChatCompletion = async (
   request: OpenRouterChatRequest
 ): Promise<Response> => {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error('OpenRouter API key is not configured. Please set OPENROUTER_API_KEY environment variable.')
+  }
+  
   return fetch(APIRoutes.ChatCompletions, {
     method: 'POST',
     headers: {
@@ -333,6 +337,10 @@ export const sendChatCompletion = async (
 export const sendStreamingChatCompletion = async (
   request: OpenRouterChatRequest
 ): Promise<Response> => {
+  if (!OPENROUTER_API_KEY) {
+    throw new Error('OpenRouter API key is not configured. Please set OPENROUTER_API_KEY environment variable.')
+  }
+  
   return fetch(APIRoutes.ChatCompletions, {
     method: 'POST',
     headers: {

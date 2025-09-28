@@ -18,9 +18,24 @@ A modern chat interface powered by OpenRouter built with Next.js, Tailwind CSS, 
 
 ### Prerequisites
 
-Before setting up the OpenRouter Chat UI, you need an OpenRouter API key. You can get one by signing up at [OpenRouter](https://openrouter.ai/).
+Before setting up the OpenRouter Chat UI, you need API keys for the AI providers:
 
-> **Note**: The API key is already configured in the code. For production use, consider using environment variables for security.
+1. **OpenRouter API Key**: Get one by signing up at [OpenRouter](https://openrouter.ai/)
+2. **LLM7 API Keys** (optional): Get free keys at [LLM7](https://token.llm7.io/)
+
+### Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```bash
+# OpenRouter API Key
+OPENROUTER_API_KEY=sk-or-v1-your-openrouter-api-key-here
+
+# LLM7 API Keys (comma-separated for rotation)
+LLM7_API_KEYS=your-llm7-key-1,your-llm7-key-2,your-llm7-key-3,your-llm7-key-4
+```
+
+For production deployment (e.g., Vercel), add these environment variables in your deployment platform's settings.
 
 ### Installation
 
