@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Icon from '@/components/ui/icon'
 import { getProviderIcon } from '@/lib/modelProvider'
 import { OpenRouterModel } from '@/types/openrouter'
-import { BaseModel, LLM7Model } from '@/types/llm7'
+import { BaseModel, LLM7Model, Provider } from '@/types/llm7'
 import { ALL_OPENROUTER_MODELS } from '@/api/openrouter-comprehensive-models'
 import { LLM7_MODELS } from '@/api/llm7'
 
@@ -16,7 +16,7 @@ interface ModelSearchProps {
   selectedModel: string
   selectedProvider: string
   onModelSelect: (modelId: string) => void
-  onProviderSelect: (provider: string) => void
+  onProviderSelect: (provider: Provider) => Promise<void>
   availableModels: (OpenRouterModel | BaseModel)[]
 }
 
@@ -89,7 +89,7 @@ const ModelSearch = ({
         <div className="text-xs font-semibold uppercase tracking-wider text-primary/70 mb-3">
           Provider
         </div>
-        <Select value={selectedProvider} onValueChange={onProviderSelect}>
+        <Select value={selectedProvider} onValueChange={(value) => onProviderSelect(value as Provider)}>
           <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-brand/20">
             <div className="flex items-center gap-3">
               <Icon type="open-ai" className="shrink-0" size="sm" />
