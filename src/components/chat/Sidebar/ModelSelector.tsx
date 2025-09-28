@@ -2,24 +2,29 @@
 import { useState, useEffect } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import Icon from '@/components/ui/icon'
-import { getProviderIcon, getProviderFromModelId } from '@/lib/modelProvider'
-import useOpenRouterActions from '@/hooks/useOpenRouterActions'
-import { useStore } from '@/store'
+import { getProviderIcon, getProviderFromModel } from '@/lib/modelProvider'
+import useProviderActions from '@/hooks/useProviderActions'
 import { Skeleton } from '@/components/ui/skeleton'
+import { BaseModel } from '@/types/llm7'
 
 const ModelSelector = () => {
-  const { loadModels, selectModel, availableModels, selectedOpenRouterModel } = useOpenRouterActions()
-  const isModelsLoading = useStore((state) => state.isModelsLoading)
+  const { 
+    selectedProvider, 
+    selectModel, 
+    availableModels, 
+    selectedModel, 
+    loadModels,
+    isModelsLoading 
+  } = useProviderActions()
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     if (availableModels.length === 0) {
-      loadModels()
+      loadModels(selectedProvider)
     }
-  }, [availableModels.length, loadModels])
+  }, [availableModels.length, loadModels, selectedProvider])
 
-
-  const selectedModel = availableModels.find(m => m.id === selectedOpenRouterModel)
+  const currentModel = availableModels.find(m => m.id === selectedModel) as BaseModel | undefined
 
   if (isModelsLoading) {
     return (
@@ -32,24 +37,28 @@ const ModelSelector = () => {
 
   return (
     <div className="w-full">
+      <div className="text-xs font-medium uppercase text-primary mb-2">
+        Model
+      </div>
       <Select open={isOpen} onOpenChange={setIsOpen}>
         <SelectTrigger 
           className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-muted hover:bg-accent/80"
         >
           <div className="flex items-center gap-3">
-            {selectedModel && (() => {
-              const provider = getProviderFromModelId(selectedModel.id)
+            {currentModel && (() => {
+              const provider = getProviderFromModel(currentModel.id, selectedProvider)
               const icon = getProviderIcon(provider)
               return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null
             })()}
             <SelectValue placeholder="Select Model">
-              {selectedModel ? selectedModel.name : 'Select Model'}
+              {currentModel ? currentModel.name || currentModel.id : 'Select Model'}
             </SelectValue>
           </div>
         </SelectTrigger>
         <SelectContent className="max-h-60">
           {availableModels.map((model) => {
-            const provider = getProviderFromModelId(model.id)
+            const baseModel = model as BaseModel
+            const provider = getProviderFromModel(model.id, selectedProvider)
             const icon = getProviderIcon(provider)
             
             return (
@@ -62,10 +71,10 @@ const ModelSelector = () => {
                 <div className="flex items-center gap-3">
                   {icon && <Icon type={icon} className="shrink-0" size="xs" />}
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium">{model.name}</span>
-                    {model.description && (
+                    <span className="text-sm font-medium">{baseModel.name || model.id}</span>
+                    {baseModel.description && (
                       <span className="text-xs text-muted-foreground">
-                        {model.description}
+                        {baseModel.description}
                       </span>
                     )}
                   </div>

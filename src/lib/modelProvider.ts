@@ -18,7 +18,12 @@ const PROVIDER_ICON_MAP: Record<string, IconType> = {
   'meta': 'open-ai', // Use OpenAI icon for Meta
   'google': 'gemini',
   'microsoft': 'azure',
-  'perplexity': 'open-ai' // Use OpenAI icon for Perplexity
+  'perplexity': 'open-ai', // Use OpenAI icon for Perplexity
+  // LLM7 specific providers
+  'llm7': 'open-ai', // Use OpenAI icon for LLM7
+  'nebulablock': 'open-ai', // Use OpenAI icon for NebulaBlock
+  'nebius': 'open-ai', // Use OpenAI icon for Nebius
+  'mistralai': 'mistral'
 }
 
 export const getProviderIcon = (provider: string): IconType | null => {
@@ -47,4 +52,25 @@ export const getProviderFromModelId = (modelId: string): string => {
     return provider
   }
   return 'openrouter'
+}
+
+export const getProviderFromModel = (modelId: string, provider: string): string => {
+  // For LLM7 models, use the owned_by field or infer from model name
+  if (provider === 'llm7') {
+    if (modelId.includes('deepseek')) return 'deepseek'
+    if (modelId.includes('gemini')) return 'google'
+    if (modelId.includes('mistral')) return 'mistralai'
+    if (modelId.includes('gpt')) return 'openai'
+    if (modelId.includes('qwen')) return 'open-ai' // Use OpenAI icon for Qwen
+    if (modelId.includes('gemma')) return 'google'
+    return 'llm7'
+  }
+  
+  // For OpenRouter models
+  if (modelId.includes('/')) {
+    const [modelProvider] = modelId.split('/')
+    return modelProvider
+  }
+  
+  return provider
 }

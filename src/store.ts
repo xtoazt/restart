@@ -8,6 +8,7 @@ import {
   type ChatMessage
 } from '@/types/os'
 import { OpenRouterModel } from '@/types/openrouter'
+import { LLM7Model, Provider } from '@/types/llm7'
 
 interface Store {
   hydrated: boolean
@@ -42,8 +43,6 @@ interface Store {
   setAgents: (agents: AgentDetails[]) => void
   teams: TeamDetails[]
   setTeams: (teams: TeamDetails[]) => void
-  selectedModel: string
-  setSelectedModel: (model: string) => void
   mode: 'agent' | 'team'
   setMode: (mode: 'agent' | 'team') => void
   sessionsData: SessionEntry[] | null
@@ -54,11 +53,15 @@ interface Store {
   ) => void
   isSessionsLoading: boolean
   setIsSessionsLoading: (isSessionsLoading: boolean) => void
-  // OpenRouter fields
-  availableModels: OpenRouterModel[]
-  setAvailableModels: (models: OpenRouterModel[]) => void
-  selectedOpenRouterModel: string
-  setSelectedOpenRouterModel: (model: string) => void
+  // Provider and model fields
+  selectedProvider: Provider
+  setSelectedProvider: (provider: Provider) => void
+  availableOpenRouterModels: OpenRouterModel[]
+  setAvailableOpenRouterModels: (models: OpenRouterModel[]) => void
+  availableLLM7Models: LLM7Model[]
+  setAvailableLLM7Models: (models: LLM7Model[]) => void
+  selectedModel: string
+  setSelectedModel: (model: string) => void
   isModelsLoading: boolean
   setIsModelsLoading: (isLoading: boolean) => void
 }
@@ -95,8 +98,6 @@ export const useStore = create<Store>()(
       setAgents: (agents) => set({ agents }),
       teams: [],
       setTeams: (teams) => set({ teams }),
-      selectedModel: '',
-      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       mode: 'agent',
       setMode: (mode) => set(() => ({ mode })),
       sessionsData: null,
@@ -110,12 +111,17 @@ export const useStore = create<Store>()(
       isSessionsLoading: false,
       setIsSessionsLoading: (isSessionsLoading) =>
         set(() => ({ isSessionsLoading })),
-      // OpenRouter fields
-      availableModels: [],
-      setAvailableModels: (availableModels) => set(() => ({ availableModels })),
-      selectedOpenRouterModel: 'openai/gpt-4o',
-      setSelectedOpenRouterModel: (selectedOpenRouterModel) => 
-        set(() => ({ selectedOpenRouterModel })),
+      // Provider and model fields
+      selectedProvider: 'openrouter',
+      setSelectedProvider: (selectedProvider) => set(() => ({ selectedProvider })),
+      availableOpenRouterModels: [],
+      setAvailableOpenRouterModels: (availableOpenRouterModels) => 
+        set(() => ({ availableOpenRouterModels })),
+      availableLLM7Models: [],
+      setAvailableLLM7Models: (availableLLM7Models) => 
+        set(() => ({ availableLLM7Models })),
+      selectedModel: 'openai/gpt-4o',
+      setSelectedModel: (selectedModel) => set(() => ({ selectedModel })),
       isModelsLoading: false,
       setIsModelsLoading: (isModelsLoading) =>
         set(() => ({ isModelsLoading }))

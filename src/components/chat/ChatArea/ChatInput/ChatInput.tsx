@@ -4,14 +4,14 @@ import { toast } from 'sonner'
 import { TextArea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useStore } from '@/store'
-import useOpenRouterStreamHandler from '@/hooks/useOpenRouterStreamHandler'
+import useMultiProviderStreamHandler from '@/hooks/useMultiProviderStreamHandler'
 import Icon from '@/components/ui/icon'
 
 const ChatInput = () => {
   const { chatInputRef } = useStore()
 
-  const { handleStreamResponse } = useOpenRouterStreamHandler()
-  const selectedOpenRouterModel = useStore((state) => state.selectedOpenRouterModel)
+  const { handleStreamResponse } = useMultiProviderStreamHandler()
+  const selectedModel = useStore((state) => state.selectedModel)
   const [inputMessage, setInputMessage] = useState('')
   const isStreaming = useStore((state) => state.isStreaming)
   const handleSubmit = async () => {
@@ -49,13 +49,13 @@ const ChatInput = () => {
           }
         }}
         className="w-full border border-accent bg-primaryAccent px-4 text-sm text-primary focus:border-accent"
-        disabled={!selectedOpenRouterModel}
+        disabled={!selectedModel}
         ref={chatInputRef}
       />
       <Button
         onClick={handleSubmit}
         disabled={
-          !selectedOpenRouterModel || !inputMessage.trim() || isStreaming
+          !selectedModel || !inputMessage.trim() || isStreaming
         }
         size="icon"
         className="rounded-xl bg-primary p-5 text-primaryAccent"

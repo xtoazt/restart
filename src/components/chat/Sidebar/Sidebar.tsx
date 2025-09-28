@@ -1,6 +1,7 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import ModelSelector from '@/components/chat/Sidebar/ModelSelector'
+import ProviderSelector from '@/components/chat/Sidebar/ProviderSelector'
 import useChatActions from '@/hooks/useChatActions'
 import { useStore } from '@/store'
 import { motion } from 'framer-motion'
@@ -89,14 +90,12 @@ const Sidebar = () => {
         {isMounted && (
           <>
             <motion.div
-              className="flex w-full flex-col items-start gap-2"
+              className="flex w-full flex-col items-start gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
             >
-              <div className="text-xs font-medium uppercase text-primary">
-                Model
-              </div>
+              <ProviderSelector />
               <ModelSelector />
             </motion.div>
           </>
