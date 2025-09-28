@@ -1,11 +1,8 @@
 import { toast } from 'sonner'
-import { APIRoutes } from './routes'
 import { 
   OpenRouterChatRequest, 
   OpenRouterModel 
 } from '@/types/openrouter'
-
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY
 
 // Curated list of free OpenRouter models (all models with $0 pricing)
 const FREE_OPENROUTER_MODELS: OpenRouterModel[] = [
@@ -320,14 +317,9 @@ export const getOpenRouterModels = async (): Promise<OpenRouterModel[]> => {
 export const sendChatCompletion = async (
   request: OpenRouterChatRequest
 ): Promise<Response> => {
-  if (!OPENROUTER_API_KEY) {
-    throw new Error('OpenRouter API key is not configured. Please set OPENROUTER_API_KEY environment variable.')
-  }
-  
-  return fetch(APIRoutes.ChatCompletions, {
+  return fetch('/api/openrouter/chat', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(request)
@@ -337,14 +329,9 @@ export const sendChatCompletion = async (
 export const sendStreamingChatCompletion = async (
   request: OpenRouterChatRequest
 ): Promise<Response> => {
-  if (!OPENROUTER_API_KEY) {
-    throw new Error('OpenRouter API key is not configured. Please set OPENROUTER_API_KEY environment variable.')
-  }
-  
-  return fetch(APIRoutes.ChatCompletions, {
+  return fetch('/api/openrouter/chat', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({

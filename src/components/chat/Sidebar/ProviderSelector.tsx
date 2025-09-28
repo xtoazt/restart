@@ -26,12 +26,12 @@ const ProviderSelector = () => {
             </SelectValue>
           </div>
         </SelectTrigger>
-        <SelectContent className="max-h-60">
+        <SelectContent className="max-h-60 bg-background border border-primary/15 text-primary">
           {providers.map((provider) => (
             <SelectItem 
               key={provider.value} 
               value={provider.value}
-              className="flex items-center gap-3 p-3"
+              className="flex items-center gap-3 p-3 text-primary hover:bg-accent focus:bg-accent"
             >
               <div className="flex items-center gap-3">
                 <Icon type={provider.icon as 'open-ai'} className="shrink-0" size="xs" />

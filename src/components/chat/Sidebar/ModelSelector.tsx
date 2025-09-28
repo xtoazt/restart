@@ -55,7 +55,7 @@ const ModelSelector = () => {
             </SelectValue>
           </div>
         </SelectTrigger>
-        <SelectContent className="max-h-60">
+        <SelectContent className="max-h-60 bg-background border border-primary/15 text-primary">
           {availableModels.map((model) => {
             const baseModel = model as BaseModel
             const provider = getProviderFromModel(model.id, selectedProvider)
@@ -65,7 +65,7 @@ const ModelSelector = () => {
               <SelectItem 
                 key={model.id} 
                 value={model.id}
-                className="flex items-center gap-3 p-3"
+                className="flex items-center gap-3 p-3 text-primary hover:bg-accent focus:bg-accent"
                 onSelect={() => selectModel(model.id)}
               >
                 <div className="flex items-center gap-3">
