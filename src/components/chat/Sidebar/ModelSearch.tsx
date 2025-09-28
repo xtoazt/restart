@@ -168,10 +168,10 @@ const ModelSearch = ({
                 return null
               })()}
               <SelectValue placeholder="Select Model">
-                {selectedModel ? 
+                  {selectedModel ? 
                   (() => {
                     const model = allModels.find(m => m.id === selectedModel)
-                    return ('name' in model && model.name) || model?.id || selectedModel
+                    return model ? (('name' in model && model.name) || model.id) : selectedModel
                   })() : 
                   'Select Model'
                 }
