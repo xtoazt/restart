@@ -5,20 +5,20 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
                 default:
-                  'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:from-blue-700 hover:to-blue-800 hover:shadow-xl hover:scale-[1.02]',
+                  'bg-white text-black shadow-lg hover:bg-white/90 hover:shadow-xl hover:scale-[1.02]',
         destructive:
           'bg-gradient-to-r from-destructive to-destructive/80 text-white shadow-lg hover:from-destructive/90 hover:to-destructive/70 hover:shadow-xl hover:scale-[1.02]',
         outline:
-          'border border-primary/20 bg-background/50 backdrop-blur-sm shadow-sm hover:bg-accent/50 hover:border-primary/30 hover:shadow-md',
+          'border border-white/20 bg-white/10 backdrop-blur-sm shadow-sm hover:bg-white/20 hover:border-white/30 hover:shadow-md',
         secondary:
-          'bg-accent/50 text-primary shadow-sm hover:bg-accent/70 hover:shadow-md',
-        ghost: 'hover:bg-accent/50 hover:text-primary',
-        link: 'text-brand underline-offset-4 hover:underline hover:text-brand/80'
+          'bg-white/10 text-white shadow-sm hover:bg-white/20 hover:shadow-md',
+        ghost: 'hover:bg-white/10 hover:text-white',
+        link: 'text-white underline-offset-4 hover:underline hover:text-white/80'
       },
       size: {
         default: 'h-10 px-6 py-2',
