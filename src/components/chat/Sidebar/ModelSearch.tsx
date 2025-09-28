@@ -17,15 +17,13 @@ interface ModelSearchProps {
   selectedProvider: string
   onModelSelect: (modelId: string) => void
   onProviderSelect: (provider: Provider) => Promise<void>
-  availableModels: (OpenRouterModel | BaseModel)[]
 }
 
 const ModelSearch = ({
   selectedModel,
   selectedProvider,
   onModelSelect,
-  onProviderSelect,
-  availableModels
+  onProviderSelect
 }: ModelSearchProps) => {
   const [searchQuery, setSearchQuery] = useState('')
 

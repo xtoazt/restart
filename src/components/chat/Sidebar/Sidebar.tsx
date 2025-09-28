@@ -41,10 +41,9 @@ const NewChatButton = ({
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const { clearChat, focusChatInput } = useChatActions()
-  const { 
+  const {
     selectedProvider, 
     selectModel, 
-    availableModels, 
     selectedModel, 
     selectProvider
   } = useProviderActions()
@@ -110,7 +109,6 @@ const Sidebar = () => {
                 selectedProvider={selectedProvider}
                 onModelSelect={selectModel}
                 onProviderSelect={selectProvider}
-                availableModels={availableModels}
               />
             </motion.div>
             <UserProfile />
