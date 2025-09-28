@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button'
 import ModelSelector from '@/components/chat/Sidebar/ModelSelector'
 import ProviderSelector from '@/components/chat/Sidebar/ProviderSelector'
+import UserProfile from '@/components/chat/Sidebar/UserProfile'
 import useChatActions from '@/hooks/useChatActions'
 import { useStore } from '@/store'
 import { motion } from 'framer-motion'
@@ -98,6 +99,7 @@ const Sidebar = () => {
               <ProviderSelector />
               <ModelSelector />
             </motion.div>
+            <UserProfile />
           </>
         )}
       </motion.div>
