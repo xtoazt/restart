@@ -7,7 +7,7 @@ import {
 
 const OPENROUTER_API_KEY = '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'
 
-// Curated list of free OpenRouter models
+// Curated list of free OpenRouter models (all models with $0 pricing)
 const FREE_OPENROUTER_MODELS: OpenRouterModel[] = [
   {
     id: "meta-llama/llama-3.3-70b-instruct",
@@ -163,6 +163,121 @@ const FREE_OPENROUTER_MODELS: OpenRouterModel[] = [
     },
     top_provider: {
       context_length: 33000,
+      max_completion_tokens: undefined
+    },
+    per_request_limits: {
+      prompt_tokens: undefined,
+      completion_tokens: undefined
+    }
+  },
+  {
+    id: "mistralai/mixtral-8x7b-instruct",
+    name: "Mistral: Mixtral 8x7B Instruct",
+    description: "A smart and fast open model by Mistral, optimized for instruction-based tasks. Mixtral 8x7B is a mixture of experts model that delivers high performance while maintaining efficiency.",
+    context_length: 32000,
+    pricing: {
+      prompt: "0",
+      completion: "0"
+    },
+    architecture: {
+      modality: "text",
+      tokenizer: "mistral",
+      instruct_type: "chat"
+    },
+    top_provider: {
+      context_length: 32000,
+      max_completion_tokens: undefined
+    },
+    per_request_limits: {
+      prompt_tokens: undefined,
+      completion_tokens: undefined
+    }
+  },
+  {
+    id: "meta-llama/llama-3-8b-instruct",
+    name: "Meta: Llama 3 8B Instruct",
+    description: "Meta's small and powerful model designed for efficient performance. Llama 3 8B is optimized for instruction-following and provides excellent performance for its size.",
+    context_length: 8000,
+    pricing: {
+      prompt: "0",
+      completion: "0"
+    },
+    architecture: {
+      modality: "text",
+      tokenizer: "llama",
+      instruct_type: "chat"
+    },
+    top_provider: {
+      context_length: 8000,
+      max_completion_tokens: undefined
+    },
+    per_request_limits: {
+      prompt_tokens: undefined,
+      completion_tokens: undefined
+    }
+  },
+  {
+    id: "openchat/openchat-3.5-0106",
+    name: "OpenChat 3.5 0106",
+    description: "A fine-tuned chat model known for its helpful and fast responses. OpenChat 3.5 is optimized for conversational AI and provides excellent dialogue capabilities.",
+    context_length: 8000,
+    pricing: {
+      prompt: "0",
+      completion: "0"
+    },
+    architecture: {
+      modality: "text",
+      tokenizer: "openchat",
+      instruct_type: "chat"
+    },
+    top_provider: {
+      context_length: 8000,
+      max_completion_tokens: undefined
+    },
+    per_request_limits: {
+      prompt_tokens: undefined,
+      completion_tokens: undefined
+    }
+  },
+  {
+    id: "nousresearch/nous-capybara-7b",
+    name: "NousResearch: Nous Capybara 7B",
+    description: "A conversational model with good memory capabilities. Nous Capybara 7B is designed for extended conversations and maintains context well across long dialogues.",
+    context_length: 8000,
+    pricing: {
+      prompt: "0",
+      completion: "0"
+    },
+    architecture: {
+      modality: "text",
+      tokenizer: "nous",
+      instruct_type: "chat"
+    },
+    top_provider: {
+      context_length: 8000,
+      max_completion_tokens: undefined
+    },
+    per_request_limits: {
+      prompt_tokens: undefined,
+      completion_tokens: undefined
+    }
+  },
+  {
+    id: "gryphe/mythomax-l2-13b",
+    name: "Gryphe: Mythomax L2 13B",
+    description: "Balances creativity and logic, suitable for diverse tasks. Mythomax L2 13B is designed to provide creative yet logical responses across a wide range of applications.",
+    context_length: 8000,
+    pricing: {
+      prompt: "0",
+      completion: "0"
+    },
+    architecture: {
+      modality: "text",
+      tokenizer: "gryphe",
+      instruct_type: "chat"
+    },
+    top_provider: {
+      context_length: 8000,
       max_completion_tokens: undefined
     },
     per_request_limits: {

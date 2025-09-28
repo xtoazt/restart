@@ -22,6 +22,10 @@ const PROVIDER_ICON_MAP: Record<string, IconType> = {
   'perplexity': 'open-ai', // Use OpenAI icon for Perplexity
   'qwen': 'open-ai', // Use OpenAI icon for Qwen
   'mistralai': 'mistral',
+  'openchat': 'open-ai', // Use OpenAI icon for OpenChat
+  'nousresearch': 'open-ai', // Use OpenAI icon for NousResearch
+  'nous': 'open-ai', // Use OpenAI icon for Nous
+  'gryphe': 'open-ai', // Use OpenAI icon for Gryphe
   // LLM7 specific providers
   'llm7': 'open-ai', // Use OpenAI icon for LLM7
   'nebulablock': 'open-ai', // Use OpenAI icon for NebulaBlock
