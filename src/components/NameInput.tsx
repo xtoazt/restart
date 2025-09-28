@@ -34,8 +34,8 @@ const NameInput: React.FC = () => {
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-xl">
-                <Icon type="agno" size="lg" className="text-black" />
+              <div className="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center shadow-xl">
+                <Icon type="agno" size="lg" className="text-white" />
               </div>
             </div>
             <h2 className="text-4xl font-bold text-primary mb-2">Welcome, {name}!</h2>
@@ -66,8 +66,8 @@ const NameInput: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center shadow-xl">
-              <Icon type="agno" size="lg" className="text-black" />
+            <div className="w-16 h-16 rounded-2xl bg-white/20 border border-white/30 flex items-center justify-center shadow-xl">
+              <Icon type="agno" size="lg" className="text-white" />
             </div>
           </div>
           <h2 className="text-4xl font-bold text-primary mb-2">Welcome!</h2>

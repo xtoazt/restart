@@ -111,12 +111,12 @@ const ModelSearch = ({
           <SelectTrigger className="h-11 w-full rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm p-3 text-sm font-medium text-white hover:bg-white/20 hover:border-white/30 transition-all duration-200 focus:ring-2 focus:ring-white/20">
             <div className="flex items-center gap-3">
               <Icon type="open-ai" className="shrink-0" size="sm" />
-              <SelectValue placeholder="Select Provider">
+              <SelectValue placeholder="Select Provider" className="truncate">
                 {providers.find(p => p.value === selectedProvider)?.label}
               </SelectValue>
             </div>
           </SelectTrigger>
-          <SelectContent className="max-h-60 bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
+          <SelectContent className="max-h-60 w-full min-w-[200px] bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
             {providers.map((provider) => (
               <SelectItem 
                 key={provider.value} 
@@ -201,18 +201,19 @@ const ModelSearch = ({
                 }
                 return null
               })()}
-              <SelectValue placeholder="Select Model">
+              <SelectValue placeholder="Select Model" className="truncate">
                   {selectedModel ? 
                   (() => {
                     const model = allModels.find(m => m.id === selectedModel)
-                    return model ? (('name' in model && model.name) || model.id) : selectedModel
+                    const displayName = model ? (('name' in model && model.name) || model.id) : selectedModel
+                    return displayName.length > 30 ? `${displayName.substring(0, 30)}...` : displayName
                   })() : 
                   'Select Model'
                 }
               </SelectValue>
             </div>
           </SelectTrigger>
-          <SelectContent className="max-h-80 bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
+          <SelectContent className="max-h-80 w-full min-w-[300px] bg-black/95 backdrop-blur-xl border border-white/20 text-white shadow-xl">
             {Object.entries(groupedModels).map(([provider, models]) => (
               <div key={provider}>
                 <div className="px-3 py-2 text-xs font-semibold text-white/50 uppercase tracking-wider border-b border-white/10">
@@ -230,13 +231,12 @@ const ModelSearch = ({
                           ? 'opacity-60 hover:bg-white/5 focus:bg-white/5' 
                           : 'hover:bg-white/10 focus:bg-white/10'
                       }`}
-                      onSelect={() => onModelSelect(model.id)}
                     >
                       <div className="flex items-center gap-3 w-full">
                         {icon && <Icon type={icon} className="shrink-0" size="sm" />}
-                        <div className="flex flex-col flex-1">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium">{('name' in model && model.name) || model.id}</span>
+                        <div className="flex flex-col flex-1 min-w-0">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="text-sm font-medium truncate flex-1">{('name' in model && model.name) || model.id}</span>
                             {model.isFree === false && (
                               <span className="text-xs bg-white/20 text-white px-2 py-0.5 rounded-full">
                                 Premium
@@ -249,12 +249,12 @@ const ModelSearch = ({
                             )}
                           </div>
                           {'description' in model && model.description && (
-                            <span className="text-xs text-white/60">
+                            <span className="text-xs text-white/60 truncate">
                               {model.description}
                             </span>
                           )}
                           {'pricing' in model && model.pricing && (
-                            <span className="text-xs text-white/60">
+                            <span className="text-xs text-white/60 truncate">
                               ${model.pricing.prompt}/${model.pricing.completion} per 1M tokens
                             </span>
                           )}

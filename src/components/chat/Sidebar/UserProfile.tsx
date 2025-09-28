@@ -26,8 +26,8 @@ const UserProfile: React.FC = () => {
   return (
     <div className="flex items-center justify-between p-4 border-t border-primary/10 bg-background/50 backdrop-blur-sm">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-lg">
-          <Icon type="user" size="sm" className="text-black" />
+        <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center shadow-lg">
+          <Icon type="user" size="sm" className="text-white" />
         </div>
         <div className="flex flex-col">
           <span className="text-sm font-semibold text-primary">
