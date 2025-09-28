@@ -9,9 +9,10 @@ import {
 } from 'firebase/auth'
 import { doc, setDoc, getDoc } from 'firebase/firestore'
 import { auth, db } from '@/lib/firebase'
+import { simpleAuth, SimpleUser } from '@/lib/simpleAuth'
 
 interface AuthContextType {
-  user: User | null
+  user: User | SimpleUser | null
   loading: boolean
   signIn: (username: string, password: string) => Promise<void>
   signUp: (username: string, password: string, name: string) => Promise<void>
@@ -27,57 +28,107 @@ const createInternalEmail = (username: string): string => {
 }
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | SimpleUser | null>(null)
   const [loading, setLoading] = useState(true)
+  const [useFirebase, setUseFirebase] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        // Get user data from Firestore
-        const userDoc = await getDoc(doc(db, 'users', user.uid))
-        if (userDoc.exists()) {
+    // Try Firebase first, fallback to simple auth if Firebase fails
+    const initializeAuth = async () => {
+      if (!auth) {
+        console.warn('Firebase auth not available, using simple auth')
+        setUseFirebase(false)
+        
+        // Use simple auth
+        const currentUser = simpleAuth.getCurrentUser()
+        setUser(currentUser)
+        setLoading(false)
+        
+        // Set up simple auth listener
+        const unsubscribe = simpleAuth.onAuthStateChanged((user) => {
           setUser(user)
-        } else {
-          // Create user document if it doesn't exist
-          await setDoc(doc(db, 'users', user.uid), {
-            email: user.email,
-            name: user.displayName || 'User',
-            role: 'user',
-            createdAt: new Date().toISOString()
-          })
-          setUser(user)
-        }
-      } else {
-        setUser(null)
+        })
+        
+        return unsubscribe
       }
-      setLoading(false)
-    })
+      
+      try {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+          if (user && db) {
+            // Get user data from Firestore
+            const userDoc = await getDoc(doc(db, 'users', user.uid))
+            if (userDoc.exists()) {
+              setUser(user)
+            } else {
+              // Create user document if it doesn't exist
+              await setDoc(doc(db, 'users', user.uid), {
+                email: user.email,
+                name: user.displayName || 'User',
+                role: 'user',
+                createdAt: new Date().toISOString()
+              })
+              setUser(user)
+            }
+          } else {
+            setUser(user)
+          }
+          setLoading(false)
+        })
 
-    return () => unsubscribe()
+        return () => unsubscribe()
+      } catch (error) {
+        console.warn('Firebase auth not available, using simple auth:', error)
+        setUseFirebase(false)
+        
+        // Use simple auth
+        const currentUser = simpleAuth.getCurrentUser()
+        setUser(currentUser)
+        setLoading(false)
+        
+        // Set up simple auth listener
+        const unsubscribe = simpleAuth.onAuthStateChanged((user) => {
+          setUser(user)
+        })
+        
+        return unsubscribe
+      }
+    }
+
+    const cleanup = initializeAuth()
+    return () => {
+      cleanup.then(cleanupFn => cleanupFn && cleanupFn())
+    }
   }, [])
 
   const signIn = async (username: string, password: string) => {
     try {
-      // Convert username to internal email
-      const email = createInternalEmail(username)
-      
-      // Check if user exists in Firebase, if not create them
-      try {
-        await signInWithEmailAndPassword(auth, email, password)
-      } catch (error: unknown) {
-        if (error instanceof Error && 'code' in error && error.code === 'auth/user-not-found') {
-          // Create the user if they don't exist
-          await createUserWithEmailAndPassword(auth, email, password)
-          // Update the user profile
-          await setDoc(doc(db, 'users', auth.currentUser!.uid), {
-            email: email,
-            name: username,
-            role: 'user',
-            createdAt: new Date().toISOString()
-          })
-        } else {
-          throw error
+      if (useFirebase && auth) {
+        // Convert username to internal email
+        const email = createInternalEmail(username)
+        
+        // Check if user exists in Firebase, if not create them
+        try {
+          await signInWithEmailAndPassword(auth, email, password)
+        } catch (error: unknown) {
+          if (error instanceof Error && 'code' in error && error.code === 'auth/user-not-found') {
+            // Create the user if they don't exist
+            await createUserWithEmailAndPassword(auth, email, password)
+            // Update the user profile
+            if (db && auth.currentUser) {
+              await setDoc(doc(db, 'users', auth.currentUser.uid), {
+                email: email,
+                name: username,
+                role: 'user',
+                createdAt: new Date().toISOString()
+              })
+            }
+          } else {
+            throw error
+          }
         }
+      } else {
+        // Use simple auth
+        await simpleAuth.signIn(username)
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign in'
@@ -87,18 +138,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (username: string, password: string, name: string) => {
     try {
-      // Convert username to internal email
-      const email = createInternalEmail(username)
-      
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      
-      // Create user document in Firestore
-      await setDoc(doc(db, 'users', userCredential.user.uid), {
-        email: email,
-        name: name,
-        role: 'user',
-        createdAt: new Date().toISOString()
-      })
+      if (useFirebase && auth) {
+        // Convert username to internal email
+        const email = createInternalEmail(username)
+        
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        
+        // Create user document in Firestore
+        if (db) {
+          await setDoc(doc(db, 'users', userCredential.user.uid), {
+            email: email,
+            name: name,
+            role: 'user',
+            createdAt: new Date().toISOString()
+          })
+        }
+      } else {
+        // Use simple auth
+        await simpleAuth.signUp(username)
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign up'
       throw new Error(errorMessage)
@@ -107,7 +165,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = async () => {
     try {
-      await signOut(auth)
+      if (useFirebase && auth) {
+        await signOut(auth)
+      } else {
+        await simpleAuth.signOut()
+      }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to sign out'
       throw new Error(errorMessage)

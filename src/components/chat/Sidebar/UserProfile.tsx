@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
+import { SimpleUser } from '@/lib/simpleAuth'
 import Icon from '@/components/ui/icon'
 import { toast } from 'sonner'
 
@@ -32,10 +33,10 @@ const UserProfile: React.FC = () => {
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-medium text-primary">
-            {user.displayName || user.email?.split('@')[0] || 'User'}
+            {'displayName' in user ? user.displayName || user.email?.split('@')[0] || 'User' : (user as SimpleUser).username}
           </span>
           <span className="text-xs text-muted">
-            {user.email?.replace('@restart.com', '') || 'User'}
+            {'email' in user ? user.email?.replace('@restart.com', '') || 'User' : (user as SimpleUser).username}
           </span>
         </div>
       </div>

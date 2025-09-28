@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { initializeApp, type FirebaseApp } from 'firebase/app'
+import { getAuth, type Auth } from 'firebase/auth'
+import { getFirestore, type Firestore } from 'firebase/firestore'
 
 // Firebase configuration
 const firebaseConfig = {
@@ -13,12 +13,19 @@ const firebaseConfig = {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig)
+let app: FirebaseApp | null = null
+let auth: Auth | null = null
+let db: Firestore | null = null
 
-// Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app)
+try {
+  app = initializeApp(firebaseConfig)
+  auth = getAuth(app)
+  db = getFirestore(app)
+} catch (error) {
+  console.warn('Firebase initialization failed, using fallback auth:', error)
+  // Don't throw error, just set to null
+}
 
-// Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app)
+export { auth, db }
 
 export default app
