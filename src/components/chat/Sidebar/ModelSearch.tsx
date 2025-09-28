@@ -28,7 +28,6 @@ const ModelSearch = ({
   availableModels
 }: ModelSearchProps) => {
   const [searchQuery, setSearchQuery] = useState('')
-  const [showAllModels, setShowAllModels] = useState(false)
 
   // Combine all models from both providers
   const allModels = useMemo((): UnifiedModel[] => {
@@ -48,19 +47,10 @@ const ModelSearch = ({
 
   // Filter models based on search query
   const filteredModels = useMemo((): UnifiedModel[] => {
-    // Always start with all models for search functionality
-    let modelsToFilter = allModels
-    
-    // If not showing all models, filter to only available models first
-    if (!showAllModels) {
-      const availableModelIds = new Set(availableModels.map(m => m.id))
-      modelsToFilter = allModels.filter(model => availableModelIds.has(model.id))
-    }
-
-    // Apply search filter if there's a query
+    // If there's a search query, search through ALL models
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      const results = modelsToFilter.filter(model => {
+      const results = allModels.filter(model => {
         const modelName = 'name' in model ? model.name : model.id
         const description = 'description' in model ? model.description : undefined
         return modelName.toLowerCase().includes(query) ||
@@ -71,8 +61,10 @@ const ModelSearch = ({
       return results
     }
 
-    return modelsToFilter
-  }, [searchQuery, showAllModels, allModels, availableModels])
+    // If no search query, show only available models
+    const availableModelIds = new Set(availableModels.map(m => m.id))
+    return allModels.filter(model => availableModelIds.has(model.id))
+  }, [searchQuery, allModels, availableModels])
 
   // Group models by provider
   const groupedModels = useMemo(() => {
@@ -170,19 +162,6 @@ const ModelSearch = ({
         </div>
       </div>
 
-      {/* Show All Models Toggle */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="showAllModels"
-          checked={showAllModels}
-          onChange={(e) => setShowAllModels(e.target.checked)}
-          className="rounded border-white/20 bg-white/10 text-white focus:ring-white/20"
-        />
-        <label htmlFor="showAllModels" className="text-xs text-white/70 cursor-pointer">
-          Show all available models (including premium)
-        </label>
-      </div>
 
       {/* Model Selector */}
       <div>
