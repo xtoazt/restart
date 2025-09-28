@@ -1,18 +1,23 @@
 'use client'
 import Sidebar from '@/components/chat/Sidebar/Sidebar'
 import { ChatArea } from '@/components/chat/ChatArea'
-import ProtectedRoute from '@/components/auth/ProtectedRoute'
+import NameInput from '@/components/NameInput'
+import { useUser } from '@/contexts/UserContext'
 import { Suspense } from 'react'
 
 export default function Home() {
+  const { userName } = useUser()
+
+  if (!userName) {
+    return <NameInput />
+  }
+
   return (
-    <ProtectedRoute>
-      <Suspense fallback={<div>Loading...</div>}>
-        <div className="flex h-screen bg-background/80">
-          <Sidebar />
-          <ChatArea />
-        </div>
-      </Suspense>
-    </ProtectedRoute>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="flex h-screen bg-background/80">
+        <Sidebar />
+        <ChatArea />
+      </div>
+    </Suspense>
   )
 }

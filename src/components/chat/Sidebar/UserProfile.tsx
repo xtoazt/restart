@@ -1,29 +1,27 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useAuth } from '@/contexts/AuthContext'
-import { SimpleUser } from '@/lib/simpleAuth'
+import { useUser } from '@/contexts/UserContext'
 import Icon from '@/components/ui/icon'
 import { toast } from 'sonner'
 
 const UserProfile: React.FC = () => {
-  const { user, logout } = useAuth()
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const { userName, clearUserName } = useUser()
+  const [isClearing, setIsClearing] = useState(false)
 
-  const handleLogout = async () => {
-    setIsLoggingOut(true)
+  const handleClearName = async () => {
+    setIsClearing(true)
     try {
-      await logout()
-      toast.success('Successfully signed out!')
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'An error occurred'
-      toast.error(errorMessage)
+      clearUserName()
+      toast.success('Name cleared! Please refresh to set a new name.')
+    } catch {
+      toast.error('Failed to clear name')
     } finally {
-      setIsLoggingOut(false)
+      setIsClearing(false)
     }
   }
 
-  if (!user) return null
+  if (!userName) return null
 
   return (
     <div className="flex items-center justify-between p-3 border-t border-primary/15">
@@ -33,22 +31,22 @@ const UserProfile: React.FC = () => {
         </div>
         <div className="flex flex-col">
           <span className="text-xs font-medium text-primary">
-            {'displayName' in user ? user.displayName || user.email?.split('@')[0] || 'User' : (user as SimpleUser).username}
+            {userName}
           </span>
           <span className="text-xs text-muted">
-            {'email' in user ? user.email?.replace('@restart.com', '') || 'User' : (user as SimpleUser).username}
+            Local User
           </span>
         </div>
       </div>
       <Button
-        onClick={handleLogout}
-        disabled={isLoggingOut}
+        onClick={handleClearName}
+        disabled={isClearing}
         variant="ghost"
         size="sm"
         className="h-8 w-8 p-0 hover:bg-accent"
-        title="Sign Out"
+        title="Clear Name"
       >
-        {isLoggingOut ? (
+        {isClearing ? (
           <div className="w-4 h-4 border-2 border-muted border-t-transparent rounded-full animate-spin" />
         ) : (
           <Icon type="x" size="xs" />
