@@ -10,9 +10,11 @@ import { useState, useEffect } from 'react'
 import Icon from '@/components/ui/icon'
 
 const SidebarHeader = () => (
-  <div className="flex items-center gap-2">
-    <Icon type="agno" size="xs" />
-    <span className="text-xs font-medium uppercase text-white">Agent UI</span>
+  <div className="flex items-center gap-3 px-2">
+    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-lg">
+      <Icon type="agno" size="sm" className="text-white" />
+    </div>
+    <span className="text-sm font-bold text-primary">Agent UI</span>
   </div>
 )
 
@@ -27,10 +29,10 @@ const NewChatButton = ({
     onClick={onClick}
     disabled={disabled}
     size="lg"
-    className="h-9 w-full rounded-xl bg-primary text-xs font-medium text-background hover:bg-primary/80"
+    className="w-full h-11 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
   >
-    <Icon type="plus-icon" size="xs" className="text-background" />
-    <span className="uppercase">New Chat</span>
+    <Icon type="plus-icon" size="sm" className="text-white" />
+    <span>New Chat</span>
   </Button>
 )
 
@@ -56,26 +58,26 @@ const Sidebar = () => {
 
   return (
     <motion.aside
-      className="relative flex h-screen shrink-0 grow-0 flex-col overflow-hidden px-2 py-3 font-dmmono"
-      initial={{ width: '16rem' }}
-      animate={{ width: isCollapsed ? '2.5rem' : '16rem' }}
+      className="relative flex h-screen shrink-0 grow-0 flex-col overflow-hidden border-r border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-6 font-dmmono"
+      initial={{ width: '18rem' }}
+      animate={{ width: isCollapsed ? '3rem' : '18rem' }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
     >
       <motion.button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute right-2 top-2 z-10 p-1"
+        className="absolute right-3 top-3 z-10 p-2 rounded-lg hover:bg-accent/50 transition-colors"
         aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         type="button"
         whileTap={{ scale: 0.95 }}
       >
         <Icon
           type="sheet"
-          size="xs"
-          className={`transform ${isCollapsed ? 'rotate-180' : 'rotate-0'}`}
+          size="sm"
+          className={`transform transition-transform duration-200 ${isCollapsed ? 'rotate-180' : 'rotate-0'}`}
         />
       </motion.button>
       <motion.div
-        className="w-60 space-y-5"
+        className="w-full space-y-6"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: isCollapsed ? 0 : 1, x: isCollapsed ? -20 : 0 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -91,7 +93,7 @@ const Sidebar = () => {
         {isMounted && (
           <>
             <motion.div
-              className="flex w-full flex-col items-start gap-4"
+              className="flex w-full flex-col items-start gap-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}

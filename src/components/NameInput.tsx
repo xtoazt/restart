@@ -30,26 +30,28 @@ const NameInput: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background/80 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <Icon type="agno" size="lg" />
+            <div className="flex justify-center mb-6">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-xl">
+                <Icon type="agno" size="lg" className="text-white" />
+              </div>
             </div>
-            <h2 className="text-3xl font-bold text-primary">Welcome, {name}!</h2>
-            <p className="mt-2 text-sm text-muted">
+            <h2 className="text-4xl font-bold text-primary mb-2">Welcome, {name}!</h2>
+            <p className="text-muted">
               Ready to start chatting with AI
             </p>
           </div>
 
-          <div className="bg-accent rounded-xl p-6 border border-primary/15 text-center">
-            <p className="text-sm text-primary mb-4">
+          <div className="glass-effect rounded-2xl p-8 text-center">
+            <p className="text-primary mb-6">
               You&apos;re all set to start chatting with AI models.
             </p>
             <Button
               onClick={handleEdit}
               variant="outline"
-              className="border-primary/15 text-primary hover:bg-accent"
+              className="w-full"
             >
               Change Name
             </Button>
@@ -60,22 +62,24 @@ const NameInput: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background/80 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="flex justify-center mb-4">
-            <Icon type="agno" size="lg" />
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-xl">
+              <Icon type="agno" size="lg" className="text-white" />
+            </div>
           </div>
-          <h2 className="text-3xl font-bold text-primary">Welcome!</h2>
-          <p className="mt-2 text-sm text-muted">
+          <h2 className="text-4xl font-bold text-primary mb-2">Welcome!</h2>
+          <p className="text-muted">
             What should we call you?
           </p>
         </div>
 
-        <div className="bg-accent rounded-xl p-6 border border-primary/15">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="glass-effect rounded-2xl p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-primary mb-2">
+              <label htmlFor="name" className="block text-sm font-semibold text-primary mb-3">
                 Your Name
               </label>
               <input
@@ -84,7 +88,7 @@ const NameInput: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full border border-primary/15 bg-primaryAccent px-4 py-3 text-sm text-primary focus:border-accent rounded-xl"
+                className="w-full border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand/50 focus:ring-2 focus:ring-brand/20 rounded-xl transition-all duration-200"
                 autoFocus
               />
             </div>
@@ -92,7 +96,7 @@ const NameInput: React.FC = () => {
             <Button
               type="submit"
               disabled={!name.trim()}
-              className="w-full bg-primary text-background hover:bg-primary/80 py-3"
+              className="w-full"
             >
               Continue
             </Button>

@@ -24,13 +24,13 @@ const UserProfile: React.FC = () => {
   if (!userName) return null
 
   return (
-    <div className="flex items-center justify-between p-3 border-t border-primary/15">
+    <div className="flex items-center justify-between p-4 border-t border-primary/10 bg-background/50 backdrop-blur-sm">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-          <Icon type="user" size="xs" className="text-background" />
+        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand to-brand/80 flex items-center justify-center shadow-lg">
+          <Icon type="user" size="sm" className="text-white" />
         </div>
         <div className="flex flex-col">
-          <span className="text-xs font-medium text-primary">
+          <span className="text-sm font-semibold text-primary">
             {userName}
           </span>
           <span className="text-xs text-muted">
@@ -42,8 +42,8 @@ const UserProfile: React.FC = () => {
         onClick={handleClearName}
         disabled={isClearing}
         variant="ghost"
-        size="sm"
-        className="h-8 w-8 p-0 hover:bg-accent"
+        size="icon"
+        className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive transition-colors"
         title="Clear Name"
       >
         {isClearing ? (

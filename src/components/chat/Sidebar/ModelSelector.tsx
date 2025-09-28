@@ -28,34 +28,34 @@ const ModelSelector = () => {
 
   if (isModelsLoading) {
     return (
-      <div className="flex h-9 w-full items-center gap-3 rounded-xl border border-primary/15 bg-accent p-3">
-        <Skeleton className="h-4 w-4 rounded" />
-        <Skeleton className="h-3 w-24" />
+      <div className="flex h-11 w-full items-center gap-3 rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3">
+        <Skeleton className="h-5 w-5 rounded-full" />
+        <Skeleton className="h-4 w-32" />
       </div>
     )
   }
 
   return (
     <div className="w-full">
-      <div className="text-xs font-medium uppercase text-primary mb-2">
+      <div className="text-xs font-semibold uppercase tracking-wider text-primary/70 mb-3">
         Model
       </div>
       <Select open={isOpen} onOpenChange={setIsOpen}>
         <SelectTrigger 
-          className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-primary hover:bg-accent/80"
+          className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-brand/20"
         >
           <div className="flex items-center gap-3">
             {currentModel && (() => {
               const provider = getProviderFromModel(currentModel.id, selectedProvider)
               const icon = getProviderIcon(provider)
-              return icon ? <Icon type={icon} className="shrink-0" size="xs" /> : null
+              return icon ? <Icon type={icon} className="shrink-0" size="sm" /> : null
             })()}
             <SelectValue placeholder="Select Model">
               {currentModel ? currentModel.name || currentModel.id : 'Select Model'}
             </SelectValue>
           </div>
         </SelectTrigger>
-        <SelectContent className="max-h-60 bg-background border border-primary/15 text-primary">
+        <SelectContent className="max-h-60 bg-background/95 backdrop-blur-xl border border-primary/10 text-primary shadow-xl">
           {availableModels.map((model) => {
             const baseModel = model as BaseModel
             const provider = getProviderFromModel(model.id, selectedProvider)
@@ -65,15 +65,15 @@ const ModelSelector = () => {
               <SelectItem 
                 key={model.id} 
                 value={model.id}
-                className="flex items-center gap-3 p-3 text-primary hover:bg-accent focus:bg-accent"
+                className="flex items-center gap-3 p-3 text-primary hover:bg-accent/50 focus:bg-accent/50 transition-colors"
                 onSelect={() => selectModel(model.id)}
               >
                 <div className="flex items-center gap-3">
-                  {icon && <Icon type={icon} className="shrink-0" size="xs" />}
+                  {icon && <Icon type={icon} className="shrink-0" size="sm" />}
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{baseModel.name || model.id}</span>
                     {baseModel.description && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs text-muted">
                         {baseModel.description}
                       </span>
                     )}

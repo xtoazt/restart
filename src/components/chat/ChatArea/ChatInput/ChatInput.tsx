@@ -32,35 +32,41 @@ const ChatInput = () => {
   }
 
   return (
-    <div className="relative mx-auto mb-1 flex w-full max-w-2xl items-end justify-center gap-x-2 font-geist">
-      <TextArea
-        placeholder={'Ask anything'}
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        onKeyDown={(e) => {
-          if (
-            e.key === 'Enter' &&
-            !e.nativeEvent.isComposing &&
-            !e.shiftKey &&
-            !isStreaming
-          ) {
-            e.preventDefault()
-            handleSubmit()
-          }
-        }}
-        className="w-full border border-accent bg-primaryAccent px-4 text-sm text-primary focus:border-accent"
-        disabled={!selectedModel}
-        ref={chatInputRef}
-      />
+    <div className="relative mx-auto mb-6 flex w-full max-w-2xl items-end justify-center gap-x-3 font-geist">
+      <div className="relative flex-1">
+        <TextArea
+          placeholder={'Ask anything...'}
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (
+              e.key === 'Enter' &&
+              !e.nativeEvent.isComposing &&
+              !e.shiftKey &&
+              !isStreaming
+            ) {
+              e.preventDefault()
+              handleSubmit()
+            }
+          }}
+          className="w-full min-h-[52px] max-h-32 border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-brand/50 focus:ring-2 focus:ring-brand/20 transition-all duration-200 resize-none"
+          disabled={!selectedModel}
+          ref={chatInputRef}
+        />
+      </div>
       <Button
         onClick={handleSubmit}
         disabled={
           !selectedModel || !inputMessage.trim() || isStreaming
         }
         size="icon"
-        className="rounded-xl bg-primary p-5 text-primaryAccent"
+        className="h-[52px] w-[52px] rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
       >
-        <Icon type="send" color="primaryAccent" />
+        {isStreaming ? (
+          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <Icon type="send" className="text-white" size="sm" />
+        )}
       </Button>
     </div>
   )

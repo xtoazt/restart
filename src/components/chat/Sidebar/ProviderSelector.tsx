@@ -14,27 +14,27 @@ const ProviderSelector = () => {
 
   return (
     <div className="w-full">
-      <div className="text-xs font-medium uppercase text-primary mb-2">
+      <div className="text-xs font-semibold uppercase tracking-wider text-primary/70 mb-3">
         Provider
       </div>
       <Select value={selectedProvider} onValueChange={selectProvider}>
-        <SelectTrigger className="h-9 w-full rounded-xl border border-primary/15 bg-accent p-3 text-xs font-medium uppercase text-primary hover:bg-accent/80">
+        <SelectTrigger className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm p-3 text-sm font-medium text-primary hover:bg-background/70 hover:border-primary/20 transition-all duration-200 focus:ring-2 focus:ring-brand/20">
           <div className="flex items-center gap-3">
-            <Icon type="open-ai" className="shrink-0" size="xs" />
+            <Icon type="open-ai" className="shrink-0" size="sm" />
             <SelectValue>
               {providers.find(p => p.value === selectedProvider)?.label}
             </SelectValue>
           </div>
         </SelectTrigger>
-        <SelectContent className="max-h-60 bg-background border border-primary/15 text-primary">
+        <SelectContent className="max-h-60 bg-background/95 backdrop-blur-xl border border-primary/10 text-primary shadow-xl">
           {providers.map((provider) => (
             <SelectItem 
               key={provider.value} 
               value={provider.value}
-              className="flex items-center gap-3 p-3 text-primary hover:bg-accent focus:bg-accent"
+              className="flex items-center gap-3 p-3 text-primary hover:bg-accent/50 focus:bg-accent/50 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <Icon type={provider.icon as 'open-ai'} className="shrink-0" size="xs" />
+                <Icon type={provider.icon as 'open-ai'} className="shrink-0" size="sm" />
                 <span className="text-sm font-medium">{provider.label}</span>
               </div>
             </SelectItem>

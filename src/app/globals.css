@@ -4,12 +4,35 @@
 
 @layer base {
   :root {
-    --color-border-default: 255, 255, 255, 0.2;
+    --color-border-default: 255, 255, 255, 0.1;
     --scrollbar-width: 0.1rem;
   }
 
   body {
-    @apply bg-background/80 text-secondary;
+    @apply bg-background text-secondary antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-background/80 backdrop-blur-xl border border-primary/10;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-200 hover:bg-accent/50 hover:border-primary/20;
+  }
+  
+  .button-primary {
+    @apply bg-gradient-to-r from-brand to-brand/80 hover:from-brand/90 hover:to-brand/70 text-white shadow-lg hover:shadow-xl transition-all duration-200;
+  }
+  
+  .input-focus {
+    @apply focus:ring-2 focus:ring-brand/20 focus:border-brand/50 transition-all duration-200;
   }
 }
 
@@ -18,14 +41,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  --tw-border-opacity: 1;
-  @apply bg-border;
-  border-color: rgba(255, 255, 255, var(--tw-border-opacity));
-  border-radius: 9999px;
-  border-width: 1px;
+  @apply bg-primary/20 rounded-full;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
-  border-radius: 9999px;
+  @apply bg-transparent;
 }

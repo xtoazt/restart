@@ -13,8 +13,12 @@ export default function Home() {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="flex h-screen bg-background/80">
+    <Suspense fallback={
+      <div className="flex h-screen bg-background items-center justify-center">
+        <div className="w-8 h-8 border-2 border-brand border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <div className="flex h-screen bg-background">
         <Sidebar />
         <ChatArea />
       </div>
