@@ -48,18 +48,28 @@ const ModelSearch = ({
 
   // Filter models based on search query
   const filteredModels = useMemo((): UnifiedModel[] => {
-    if (!searchQuery.trim()) {
-      return showAllModels ? allModels : (availableModels as UnifiedModel[])
+    // Always start with all models for search functionality
+    let modelsToFilter = allModels
+    
+    // If not showing all models, filter to only available models first
+    if (!showAllModels) {
+      const availableModelIds = new Set(availableModels.map(m => m.id))
+      modelsToFilter = allModels.filter(model => availableModelIds.has(model.id))
     }
 
-    const query = searchQuery.toLowerCase()
-    return allModels.filter(model => {
-      const modelName = 'name' in model ? model.name : model.id
-      const description = 'description' in model ? model.description : undefined
-      return modelName.toLowerCase().includes(query) ||
-        model.id.toLowerCase().includes(query) ||
-        (description && description.toLowerCase().includes(query))
-    })
+    // Apply search filter if there's a query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      return modelsToFilter.filter(model => {
+        const modelName = 'name' in model ? model.name : model.id
+        const description = 'description' in model ? model.description : undefined
+        return modelName.toLowerCase().includes(query) ||
+          model.id.toLowerCase().includes(query) ||
+          (description && description.toLowerCase().includes(query))
+      })
+    }
+
+    return modelsToFilter
   }, [searchQuery, showAllModels, allModels, availableModels])
 
   // Group models by provider
@@ -117,8 +127,15 @@ const ModelSearch = ({
 
       {/* Search Input */}
       <div>
-        <div className="text-xs font-semibold uppercase tracking-wider text-primary/70 mb-3">
-          Search Models
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-xs font-semibold uppercase tracking-wider text-primary/70">
+            Search Models
+          </div>
+          {searchQuery && (
+            <div className="text-xs text-muted">
+              {filteredModels.length} result{filteredModels.length !== 1 ? 's' : ''}
+            </div>
+          )}
         </div>
         <div className="relative">
           <Input
@@ -126,13 +143,22 @@ const ModelSearch = ({
             placeholder="Search models by name, ID, or description..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 text-sm text-primary placeholder:text-muted focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+            className="h-11 w-full rounded-xl border border-primary/10 bg-background/50 backdrop-blur-sm px-4 py-3 pr-10 text-sm text-primary placeholder:text-muted focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
           />
-          <Icon 
-            type="search" 
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-muted" 
-            size="sm" 
-          />
+          {searchQuery ? (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-primary transition-colors"
+            >
+              <Icon type="x" size="sm" />
+            </button>
+          ) : (
+            <Icon 
+              type="search" 
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted" 
+              size="sm" 
+            />
+          )}
         </div>
       </div>
 
