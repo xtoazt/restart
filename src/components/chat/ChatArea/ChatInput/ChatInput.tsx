@@ -70,7 +70,7 @@ const ChatInput = () => {
   }
 
   return (
-    <div className="relative mx-auto mb-6 flex w-full max-w-2xl flex-col gap-3 font-geist">
+    <div className="relative mx-auto mb-6 flex w-full max-w-4xl flex-col gap-3 font-geist">
       {/* Attached Files Display */}
       {attachedFiles.length > 0 && (
         <div className="flex flex-wrap gap-2 p-3 bg-white/5 rounded-xl border border-white/10">

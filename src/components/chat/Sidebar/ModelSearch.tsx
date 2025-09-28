@@ -61,10 +61,9 @@ const ModelSearch = ({
       return results
     }
 
-    // If no search query, show only available models
-    const availableModelIds = new Set(availableModels.map(m => m.id))
-    return allModels.filter(model => availableModelIds.has(model.id))
-  }, [searchQuery, allModels, availableModels])
+    // If no search query, show ALL models (both available and premium)
+    return allModels
+  }, [searchQuery, allModels])
 
   // Group models by provider
   const groupedModels = useMemo(() => {
